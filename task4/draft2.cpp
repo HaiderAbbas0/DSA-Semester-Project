@@ -3,6 +3,7 @@
 #include <sstream>
 #include <utility>
 #include <cstring>
+#include<string>
 
 using namespace std;
 
@@ -12,13 +13,15 @@ struct Edge{
     int weight;
     Edge* next;
     int vehicleCount;
+    string name;
 
-    Edge(int weight1,char destination1)
+    Edge(int weight1,char destination1,string name1)
     {
         weight=weight1;
         destination=destination1;
         next=nullptr;
         vehicleCount = 0;
+        name=name1;
     }
 };
 
@@ -31,16 +34,190 @@ struct Node{
     Node(char value1='\0'){
         value=value1;
         head=nullptr;
+        tail=nullptr;
     }
 
+};
+
+struct linkedNode
+{
+
+    int data;
+    linkedNode* next;
+   
+    linkedNode(int value){
+        data=value;
+        next=nullptr;
+    }
+};
+
+class LinkedList
+{
+
+    private:
+
+    linkedNode* head;
+    
+    public:
+    LinkedList()
+    {
+        head=nullptr;
+    }
+
+    linkedNode* getHead(){
+        return head;
+    }
+
+    void insert(int value)
+    {
+        linkedNode* newNode = new linkedNode(value);
+       
+        if(head==nullptr)
+        {
+            head=newNode;
+            return;
+        }
+       
+            linkedNode* temp=head;
+           
+            while(temp->next!=nullptr)
+            {
+                temp=temp->next;
+            }
+            temp->next=newNode;
+        
+        return;
+    }
+
+    bool search(int value)
+    {
+        linkedNode* temp=head;
+        while(temp!=nullptr)
+        {
+            if(temp->data==value)
+            {
+                return true;
+            }
+            temp=temp->next;
+        }
+        return false;
+    }
+
+    void Del()
+    {
+        linkedNode* temp=head;
+        head=head->next;
+        delete temp;
+        return;
+    }
+
+    void display()
+    {
+        linkedNode* temp=head;
+       
+        while(temp!=nullptr)
+        {
+            cout<<temp->data<<" ";
+            temp=temp->next;
+        }
+        cout<<endl;
+    }
+};    
+
+class congestion
+{
+    int capacity;
+    int size;
+    
+    int* congestionLevel;
+    string* congestionMarker;
+    string* congestionMessage;
+    LinkedList* congestionTable;
+
+    public:
+
+    congestion(int capacity1)
+    {
+        capacity=capacity1;
+        size=0;
+        congestionTable=new LinkedList[capacity];
+        congestionMessage=new string[capacity];
+        congestionLevel=new int[capacity];
+        congestionMarker=new string[capacity];
+
+        for (int i = 0; i < capacity; ++i) {
+            congestionLevel[i] = 0;
+            congestionMessage[i] = "";
+            congestionMarker[i] = "";
+        }
+    }
+
+    int hashFunction(const string& key)
+    {   
+        char lastChar=key[key.length()-1];
+        int index=lastChar-'0';  
+    
+        return index%capacity;
+    }
+
+    void insert(const string& key, int value)
+    {
+        int index=hashFunction(key);
+        congestionTable[index].insert(value); 
+        congestionMarker[index]=key;  
+    }
+
+    int search(const string& key)
+    {
+        int index=hashFunction(key);
+        return congestionTable[index].search(index);
+    }
+
+    void updateCongestion(Edge* edge){
+
+    cout << "Entering updateCongestion for road: " << edge->name << endl;  // Debug: Entering the function
+
+    int totalVehicles = edge->vehicleCount;  
+    int index = hashFunction(edge->name);
+
+    cout << "Hash index for road " << edge->name << ": " << index << endl;
+    congestionLevel[index] = totalVehicles;
+
+    if (totalVehicles <= 3) {
+        congestionMessage[index] = "Low congestion";
+    }
+    else if (totalVehicles <= 6) {
+        congestionMessage[index] = "Moderate congestion";
+    }
+    else {
+        congestionMessage[index] = "High congestion";
+    }
+
+    // Debug print to check if the values are updated
+    cout << "Updated congestion for road " << edge->name << ": " 
+         << congestionMessage[index] << " (" << congestionLevel[index] << " vehicles)" << endl;
+}
+
+    // Modified displayCongestion to show the message
+    void displayCongestion() {
+        for (int i = 0; i < capacity; i++) {
+                cout << "Road " << congestionMarker[i] << " has " 
+                     << congestionLevel[i] << " vehicles. Congestion Level: " 
+                     << congestionMessage[i] << endl;
+            }
+        
+    }
 };
 
 class TrafficNetwork
 {
     public:
+    
     Node* intersections;
     int capacity;
     int size;
+    int roadCount;
+    congestion* congestionLevels; 
 
     public:
     TrafficNetwork(int capacity1)
@@ -48,6 +225,8 @@ class TrafficNetwork
         capacity=capacity1;
         size=0;
         intersections=new Node[capacity];
+        roadCount=0;
+        congestionLevels = new congestion(capacity);
 
     }
 
@@ -81,6 +260,7 @@ class TrafficNetwork
     {
         Node* startNode=nullptr;
         Node* endNode=nullptr;
+        string roadName="Road# "+to_string(roadCount+1);
 
         for(int i=0;i<size;i++){
             if(intersections[i].value==start){
@@ -100,7 +280,7 @@ class TrafficNetwork
             return;
         }
         
-        Edge* newEdge = new Edge(weight,end); 
+        Edge* newEdge = new Edge(weight,end,roadName); 
         
         if(startNode->head==nullptr){ 
             startNode->head=newEdge; 
@@ -112,11 +292,14 @@ class TrafficNetwork
             startNode->tail=newEdge; 
         } 
 
+        roadCount++;
+
         return;
     }
     
     void currentroad(char start, char end) 
     {
+        cout<<"Hello";
         for (int i = 0; i < size; i++) 
         {
             if (intersections[i].value == start) 
@@ -127,6 +310,10 @@ class TrafficNetwork
                     if (edge->destination == end) 
                     { 
                         edge->vehicleCount++; 
+                        cout<<"Calling insert"<<endl;
+                        congestionLevels->insert(edge->name, edge->vehicleCount);
+                        cout<<"Calling congestion"<<endl;
+                        congestionLevels->updateCongestion(edge); 
                         return; 
                     }
                     edge = edge->next; 
@@ -151,6 +338,8 @@ class TrafficNetwork
 
             cout<<endl; 
         }
+
+        congestionLevels->displayCongestion(); 
 
         return;
 
@@ -177,7 +366,7 @@ class TrafficNetwork
     {
         int* distances = new int[size];
         bool* visited = new bool[size];
-        int* parent = new int[size];  // To track the predecessor of each node
+        int* parent = new int[size];  
     
         for (int i = 0; i < size; i++) 
         {
@@ -370,7 +559,7 @@ class Map
     
     void roadscsv()
     {
-        ifstream file("/uploads/road_network.csv");
+        ifstream file("road_network.csv");
         string line;
         int count = 0;
 
@@ -405,7 +594,7 @@ class Map
     
     void vehiclescsv()
     {
-        ifstream file("/uploads/vehicles.csv");
+        ifstream file("vehicles.csv");
         string line;
         int count = 0;
 
@@ -450,7 +639,7 @@ class Map
             {
                 cout << vehicles[i]->id << " reached its destination";
     
-                currentroad(vehicles[i]->curIndex, vehicles[i]->curIndex+1);
+                graph.currentroad(vehicles[i]->current, vehicles[i]->end);
     
                 for (int j = i; j < vehicleCount - 1; j++) 
                 {
@@ -539,147 +728,11 @@ class Map
     }
 };
 
-class LinkedNode
-{
-    public:
-    int data;
-
-    linkedNode* next;
-   
-    linkedNode(int value){
-        data=value;
-        next=nullptr;
-    }
-};
-
-class LinkedList
-{
-    linkedNode* head;
-    
-    public:
-    LinkedList()
-    {
-        head=nullptr;
-    }
-
-    void insert(int value)
-    {
-        linkedNode* newNode = new linkedNode(value);
-       
-        if(head==nullptr)
-        {
-            head=newNode;
-        }
-       
-        else
-        {
-            linkedNode* temp=head;
-           
-            while(temp->next!=nullptr)
-            {
-                temp=temp->next;
-            }
-            temp->next=newNode;
-        }
-    }
-
-    bool search(int value)
-    {
-        linkedNode* temp=head;
-        while(temp!=nullptr)
-        {
-            if(temp->data==value)
-            {
-                return true;
-            }
-            temp=temp->next;
-        }
-        return false;
-    }
-
-    void display()
-    {
-        linkedNode* temp=head;
-       
-        while(temp!=nullptr)
-        {
-            cout<<temp->data<<" ";
-            temp=temp->next;
-        }
-        cout<<endl;
-    }
-
-    bool search(int value)
-    {
-        linkedNode* temp=head;
-
-        while(temp!=nullptr) 
-        {
-            if (temp->data == value) 
-            {
-                return true; 
-            }
-            temp = temp->next;
-        }
-        return false; 
-    }
-
-    void Del()
-    {
-        linkedNode* temp=head;
-        head=head->next;
-        delete temp;
-        return;
-    }
-};    
-
-class congestion
-{
-    int capacity;
-    int size;
-    
-    int* congestionLevel;
-    string* congestionMarker;
-    LinkedList* congestionTable;
-
-    public:
-    congestion(int capacity1)
-    {
-        capacity=capacity1;
-        size=0;
-        congestionTable=new LinkedList[capacity];
-    }
-
-    int hashFunction(const string& key)
-    {   
-        
-    }
-
-    void insert(const string& key, int value)
-    {
-        int index=hashFunction(key);
-        congestionTable[index].insert(value); 
-    }
-
-    int search(const string& key)
-    {
-        int index=hashFunction(key);
-        return congestionTable[index].search(index);
-    }
-
-    void display() 
-    {
-        for (int i = 0; i < capacity; i++) {
-            congestionTable[i].display();
-        }
-    }
-};
-
 int main() 
 {
     Map trafficMap;
     trafficMap.shortestDis();
-    //trafficMap.displayMap();
+    trafficMap.displayMap();
     trafficMap.findAllPaths(); // Generate all paths for vehicles.
 
     return 0;
