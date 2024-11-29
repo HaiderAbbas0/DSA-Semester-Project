@@ -1046,7 +1046,7 @@ class Map
 
     void hazardCSV(){
         
-        ifstream file("accidents_or_closures.csv");
+        ifstream file("road_closures.csv");
         string line;
         int count=0;
 
@@ -1084,7 +1084,7 @@ class Map
 
     void signalCSV(){
         
-        ifstream file("traffic_signal_timings.csv");
+        ifstream file("traffic_signals.csv");
         string line;
         int count=0;
 
@@ -1551,7 +1551,8 @@ int main()
 {
     Map trafficMap;
 
-    // trafficMap.shortestDis();
+    trafficMap.shortestDis();
+    cout << "\n\n\n";
 
     // while(true){
     //     //clrscr();
@@ -1559,7 +1560,12 @@ int main()
     //     Sleep(500);
     //     system("cls");
     // }
-    // trafficMap.findAllPaths(); // Generate all paths for vehicles.
+    trafficMap.findAllPaths(); 
+        cout << "\n\n\n";
+
+    trafficMap.displayMap(); // Generate all paths for vehicles.
+        cout << "\n\n\n";
+
 
     trafficMap.testEmergencyRoutes();
   
