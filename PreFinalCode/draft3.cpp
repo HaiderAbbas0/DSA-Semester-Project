@@ -1158,6 +1158,134 @@ class Map
         file.close();
     }
 
+
+    void updateHazardCSV(char intersection1,char intersection2, string status){
+        ofstream file("road_closures.csv",ios::app);
+
+        if(!file.is_open()){
+            cout<<"Unable to open road_closures.csv file!"<<endl;
+            return;
+        }
+
+        file<<intersection1<<","<<intersection2<<","<<status<<"\n";
+        hazard.insertHazard(true,intersection1,intersection2);
+
+        file.close();
+
+        cout<<"New data appended to road_closures.csv successfully"<<endl;
+    }
+    
+    void updateEmergencyCSV(string EV,char intersection1,char intersection2, string level){
+        
+        ifstream file1("emergency_vehicles.csv");
+        
+        if(!file1.is_open()){
+            cout<<"Unable to open emergency_vehicles.csv\n";
+            return ;
+        }
+
+        string line;
+
+        while(getline(file1,line)){
+            
+            int commaPos=-1;
+            
+            for(int i=0;i<line.length();i++){
+                if(line[i]==','){
+                    commaPos=i;
+                    break;
+                }
+            }
+
+            if(commaPos!=-1){
+                string firstColumn="";
+
+                for(int i=0;i<commaPos;i++){
+                    firstColumn+=line[i];
+                }
+
+                if(firstColumn==EV){
+                    cout<<EV<<" already exists in CSV can not append it again!"<<endl;
+                    file1.close();
+                    return;
+                }
+            }
+        }
+
+        ofstream file2("emergency_vehicles.csv",ios::app);
+
+        if(!file2.is_open()){
+            cout<<"Unable to open emergency_vehicles.csv file!"<<endl;
+            return;
+        }
+
+        file2<<EV<<","<<intersection1<<","<<intersection2<<","<<level<<"\n";
+        
+        file2.close();
+        file1.close();
+
+        emergencyVehicles[emergencyvehicleCount] = new EmergencyVehicle(EV, intersection1, intersection2, level);
+        emergencyvehicleCount++;
+
+
+        cout<<"New data appended to emergency_vehicles.csv successfully"<<endl;
+    }
+
+    void updateVehicleCSV(string name,char intersection1,char intersection2){
+        
+        ifstream file1("vehicles.csv");
+        
+        if(!file1.is_open()){
+            cout<<"Unable to open vehicles.csv\n";
+            return ;
+        }
+
+        string line;
+
+        while(getline(file1,line)){
+            
+            int commaPos=-1;
+            
+            for(int i=0;i<line.length();i++){
+                if(line[i]==','){
+                    commaPos=i;
+                    break;
+                }
+            }
+
+            if(commaPos!=-1){
+                string firstColumn="";
+
+                for(int i=0;i<commaPos;i++){
+                    firstColumn+=line[i];
+                }
+
+                if(firstColumn==name){
+                    cout<<name<<" already exists in CSV can not append it again!"<<endl;
+                    file1.close();
+                    return;
+                }
+            }
+        }
+
+        ofstream file2("vehicles.csv",ios::app);
+
+        if(!file2.is_open()){
+            cout<<"Unable to open vehicles.csv file!"<<endl;
+            return;
+        }
+
+        file2<<name<<","<<intersection1<<","<<intersection2<<"\n";
+        
+        file2.close();
+        file1.close();
+
+        vehicles[vehicleCount]=new Vehicle(name,intersection1,intersection2);
+        vehicleCount++;
+
+        cout<<"New data appended to vehicles.csv successfully"<<endl;
+    }
+
     void heapifyDown(int index)
     {
         int parent=index;
@@ -1273,6 +1401,26 @@ class Map
         }
 
         setSignalStatus();  // After congestion-based updates, set signal statuses based on priority
+    }
+
+    void displayVehiclePath(string vehicleID) 
+    {
+        bool vehicleFound = false;
+        for (int i = 0; i < vehicleCount; i++) 
+        {
+            if (vehicles[i]->id==vehicleID) 
+            {
+                cout << "Vehicle ID: " << vehicles[i]->id 
+                    << ", Path: " << vehicles[i]->path 
+                    << ", Distance: " << vehicles[i]->dist << endl;
+                vehicleFound = true;
+                break;
+            }
+        }
+        if (!vehicleFound) 
+        {
+            cout << "Vehicle with ID " << vehicleID << " not found." << endl;
+        }
     }
 
     int pathtime(char* path) 
@@ -1695,7 +1843,11 @@ int main()
 {
     Map trafficMap;
     trafficMap.shortestDis();
-    trafficMap.findAllPaths(); 
+    trafficMap.findAllPaths();
+
+    string priorityLevel,EV,vehicleName,addVehicle; 
+    char a,b,c,d,start,end,vehicleStart,vehicleEnd;
+    int id,vehicleID;
 
     //trafficMap.testEmergencyRoutes();
     
@@ -1703,15 +1855,18 @@ int main()
     {
         int ans;
         cout << "------ Simulation Dashboard ------" << endl;
-        cout << "1. Display City Traffic Network\n"
-         << "2. Display All Vehicles\n"
-         << "3. Display Traffic Signal Status\n"
-         << "4. Display Congestion Status\n"
-         << "5. Display Blocked Roads\n"
-         << "6. Handle Emergency Vehicle Routing\n"
-         << "7. Block Road due to Accident\n"
-         << "8. Simulate Vehicle Routing\n"
-         << "9. Exit Simulation\n\n";
+        cout << "1.  Display City Traffic Network\n"
+         << "2.  Display All Vehicles\n"
+         << "3.  Display Traffic Signal Status\n"
+         << "4.  Display Congestion Status\n"
+         << "5.  Display Blocked Roads\n"
+         << "6.  Handle Emergency Vehicle Routing\n"
+         << "7.  Block Road due to Accident\n"
+         << "8.  Add an Emergency Vehicle\n"
+         << "9.  Display Path for a Specific Vehicle\n"
+         << "10. Add a new Vehicle\n"
+         << "11. Simulate Vehicle Routing\n"
+         << "12. Exit Simulation\n\n";
          
         cout << "Enter you choice: ";
         cin >> ans;
@@ -1746,22 +1901,58 @@ int main()
                 break;
             case 7:
                 cout << "Blocking Road due to Accident...\n";
-                
-                char a, b;
                 cout << "Start & End Intersection: ";
                 cin >> a >> b;
                 
                 trafficMap.blockroad(a, b);
+                trafficMap.updateHazardCSV(a,b,"Blocked");
                 break;
+            
             case 8:
+                cout<<"Adding Emergency Vehicle...\n";
+                cout<<"Enter Emergency Vehicle ID #: ";
+                cin>>id;
+
+                EV="EV"+to_string(id);
+
+                cout<<"Enter Start & End Intersection: ";
+                cin>>start>>end;
+
+                cout<<"Enter Priority Level: ";
+                cin>>priorityLevel;
+
+                trafficMap.updateEmergencyCSV(EV,start,end,priorityLevel);
+            
+                break;
+
+            case 9:
+                cout<<"Displaying Path for a Specific Vehicle...\n";
+                cout<<"Enter name of the vehicle whose path you want to displayed: ";
+                cin>>vehicleName;
+
+                trafficMap.displayVehiclePath(vehicleName);
+                break;    
+            case 10:
+                cout<<"Adding New Vehicle...\n";
+                cout<<"Enter Vehicle ID #: ";
+                cin>>vehicleID;
+
+                addVehicle="V"+to_string(vehicleID);
+
+                cout<<"Enter Start & End Intersection: ";
+                cin>>vehicleStart>>vehicleEnd;
+
+                trafficMap.updateVehicleCSV(addVehicle,vehicleStart,vehicleEnd);
+                break;
+
+            case 11:
                 cout << "Simulating Vehicle Routing...\n";
-                char c, d;
                 cout << "Start & End Intersection: ";
                 cin >> c >> d;
                 
                 trafficMap.simulVehicle(c, d);
                 break;
-            case 9:
+            case 12:
                 cout << "Exiting Simulation. Goodbye!\n";
                 return 0; 
             default:
