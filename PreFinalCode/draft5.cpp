@@ -920,20 +920,23 @@ class Vehicle
 
 class EmergencyVehicle
 {
-    private:
+    public:
     string vehicleID;
     char startIntersection;
     char endIntersection;
     string priority;
-
-    public:
+    char current;
+    string path;
+    
     EmergencyVehicle(string vID, char start, char end, string pLevel)
     {
         vehicleID = vID;
         startIntersection = start;
         endIntersection = end;
         priority = pLevel;
+        current = start;
     }
+    
     string getvehicleID() const 
     {
         return vehicleID;
@@ -1878,6 +1881,50 @@ class Map
         } 
     }
 
+    void moveEmergencyVehicle(string emergencyVehicleID)
+    {
+        for (int i = 0; i < emergencyvehicleCount; i++) 
+        {
+            if (emergencyVehicles[i]->vehicleID == emergencyVehicleID) 
+            {
+                // Get the smallest route using A* search algorithm
+                pair<int, string> result = graph.emergencyrouteAStar(emergencyVehicles[i]->current,emergencyVehicles[i]->endIntersection);
+
+                string path = result.second;
+                
+                // Overriding signals along the path of emergency vehicles
+                for (char intersection : path) 
+                {
+                    graph.overrideSignal(intersection);
+                    cout << "Signal at intersection " << intersection 
+                         << " overridden for emergency vehicle " << emergencyVehicleID << endl;
+                }
+
+                emergencyVehicles[i]->path = path;
+                emergencyVehicles[i]->current = path[path.length() - 1]; 
+
+                cout << "Emergency vehicle " << emergencyVehicleID 
+                     << " moving along path: " << path << endl;
+
+                if (emergencyVehicles[i]->current == emergencyVehicles[i]->endIntersection) 
+                {
+                    cout << "Emergency vehicle " << emergencyVehicleID << " reached destination." << endl;
+                    
+                    for (int j = i; j < emergencyvehicleCount - 1; j++) 
+                    {
+                        emergencyVehicles[j] = emergencyVehicles[j + 1];
+                    }
+                    emergencyvehicleCount--;
+                }
+
+                // Restoring normal signal operations after it reaches its destination
+                graph.restoreSignal();
+                return;
+            }
+        }
+        cout << "Emergency vehicle " << emergencyVehicleID << " not found!" << endl;
+    }
+
 };
 
 int main() 
@@ -1909,7 +1956,8 @@ int main()
          << "11. Move a Vehicle\n"
          << "12. Simulate Vehicle Routing\n"
          << "13. Bonus Case\n"
-         << "14. Exit Simulation\n\n";
+         << "14. Move Emergency Vehicle\n"
+         << "15. Exit Simulation\n\n";
          
         cout << "Enter you choice: ";
         cin >> ans;
@@ -2011,6 +2059,14 @@ int main()
                 trafficMap.moveVehicle();
                 break;
             case 14:
+                cout << "Moving Emergency Vehicle...\n";
+                cout << "Enter Emergency Vehicle ID #: ";
+                cin >> id;
+        
+                EV = "EV" + to_string(id);
+                trafficMap.moveEmergencyVehicle(EV);
+                break;
+            case 15:
                 cout << "Exiting Simulation. Goodbye!\n";
                 return 0; 
             default:
