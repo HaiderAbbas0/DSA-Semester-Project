@@ -1,15 +1,14 @@
 /****************************************************************************************************************************
-*                                       Data Structures Semester Project
-*
-*   Group Member Names: Hamd-Ul-Haq, Mohammad Haider Abbas, Mohammad Kumail
-*   Group Member Roll#: 23i-0081, 23i-2558, 23i-2134
-*   Course Instructor: Dr.M.Ishtiaq
-*
-****************************************************************************************************************************/
-
+ *                                       Data Structures Semester Project
+ *
+ *   Group Member Names: Hamd-Ul-Haq, Mohammad Haider Abbas, Mohammad Kumail
+ *   Group Member Roll#: 23i-0081, 23i-2558, 23i-2134
+ *   Course Instructor: Dr.M.Ishtiaq
+ *
+ ****************************************************************************************************************************/
 
 /*****************
-Libraries Included 
+Libraries Included
 *****************/
 
 #include <iostream>
@@ -17,28 +16,27 @@ Libraries Included
 #include <sstream>
 #include <utility>
 #include <cstring>
-#include<string>
+#include <string>
 
 using namespace std;
 
-
 /**********
-Edge Struct 
+Edge Struct
 **********/
 
 struct Edge
 {
     /****************************************************************************
     The edge struct basically represents our road in the graph data structure,it
-    consists of several members such as, destination, which represents the ending 
-    intersection of our road, weight representing the travel time for a specific 
-    road and the name is essentially a combination of the starting and ending 
-    intersections for a specific road.  
+    consists of several members such as, destination, which represents the ending
+    intersection of our road, weight representing the travel time for a specific
+    road and the name is essentially a combination of the starting and ending
+    intersections for a specific road.
     ****************************************************************************/
 
     char destination;
     int weight;
-    Edge* next;
+    Edge *next;
     int vehicleCount;
     string name;
 
@@ -46,21 +44,19 @@ struct Edge
     Constructor
     **********/
 
-    Edge(int weight1,char destination1,string name1)
+    Edge(int weight1, char destination1, string name1)
     {
-        weight=weight1;
-        destination=destination1;
-        next=nullptr;
+        weight = weight1;
+        destination = destination1;
+        next = nullptr;
         vehicleCount = 0;
-        name=name1;
+        name = name1;
     }
 };
-
 
 /**********
 Node Struct
 **********/
-
 
 struct Node
 {
@@ -72,22 +68,20 @@ struct Node
     ****************************************************************************/
 
     char value;
-    Edge* head;
-    Edge* tail;
+    Edge *head;
+    Edge *tail;
 
-    
     /**********
     Constructor
     **********/
 
-    Node(char value1='\0'){
-        value=value1;
-        head=nullptr;
-        tail=nullptr;
+    Node(char value1 = '\0')
+    {
+        value = value1;
+        head = nullptr;
+        tail = nullptr;
     }
-
 };
-
 
 /*****************
 Linked Node Struct
@@ -100,16 +94,16 @@ struct linkedNode
     The linked node struct is basically used in our implementation of the linked list data structure,
     it represents nodes in the entire linked list data structure.
     ************************************************************************************************/
-    
+
     int data;
-    linkedNode* next;
-   
-    linkedNode(int value){
-        data=value;
-        next=nullptr;
+    linkedNode *next;
+
+    linkedNode(int value)
+    {
+        data = value;
+        next = nullptr;
     }
 };
-
 
 /***************
 LinkedList Class
@@ -122,26 +116,25 @@ class LinkedList
     consists of numerous methods such as insertion, search and deletion.
     ********************************************************************************************/
 
-    private:
+private:
+    linkedNode *head;
 
-    linkedNode* head;
-    
-    public:
-
+public:
     /**********
     Constructor
     **********/
 
     LinkedList()
     {
-        head=nullptr;
+        head = nullptr;
     }
 
     /****************************
     Accessing Head of Linked List
     ****************************/
 
-    linkedNode* getHead(){
+    linkedNode *getHead()
+    {
         return head;
     }
 
@@ -151,15 +144,15 @@ class LinkedList
 
     void insert(int value)
     {
-        linkedNode* newNode = new linkedNode(value);
+        linkedNode *newNode = new linkedNode(value);
 
         /**************
         Empty List Case
         **************/
-       
-        if(head==nullptr)
+
+        if (head == nullptr)
         {
-            head=newNode;
+            head = newNode;
             return;
         }
 
@@ -167,16 +160,16 @@ class LinkedList
         Non Empty List Case, we traverse whole list, reach the end
         and then insert the new node in the linked list.
         *********************************************************/
-       
-        linkedNode* temp=head;
-           
-        while(temp->next!=nullptr)
-            {
-                temp=temp->next;
-            }
-        
-        temp->next=newNode;
-        
+
+        linkedNode *temp = head;
+
+        while (temp->next != nullptr)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = newNode;
+
         return;
     }
 
@@ -190,16 +183,16 @@ class LinkedList
         We traverse the whole list until given value is found
         ****************************************************/
 
-        linkedNode* temp=head;
+        linkedNode *temp = head;
 
-        while(temp!=nullptr)
+        while (temp != nullptr)
         {
-            if(temp->data==value)
+            if (temp->data == value)
             {
                 return true;
             }
 
-            temp=temp->next;
+            temp = temp->next;
         }
 
         return false;
@@ -211,8 +204,8 @@ class LinkedList
 
     void Del()
     {
-        linkedNode* temp=head;
-        head=head->next;
+        linkedNode *temp = head;
+        head = head->next;
         delete temp;
         return;
     }
@@ -223,17 +216,16 @@ class LinkedList
 
     void display()
     {
-        linkedNode* temp=head;
-       
-        while(temp!=nullptr)
+        linkedNode *temp = head;
+
+        while (temp != nullptr)
         {
-            cout<<temp->data<<" ";
-            temp=temp->next;
+            cout << temp->data << " ";
+            temp = temp->next;
         }
 
-        cout<<endl;
+        cout << endl;
     }
-
 };
 
 /***********
@@ -243,7 +235,7 @@ Signal Class
 class Signal
 {
     /****************************************************************
-    The signal class is used in controlling the operation of signals 
+    The signal class is used in controlling the operation of signals
     in the traffic network, it consists of several members such as
     signal timer representing green time of a signal, signal status
     which indicates if a signal is GREEN or RED, and congestion,
@@ -251,8 +243,7 @@ class Signal
     at which the signal is located.
     ****************************************************************/
 
-    private:
-
+private:
     bool signalStatus;
     int signalTimer;
     char signalIntersection;
@@ -262,42 +253,46 @@ class Signal
     Constructor
     **********/
 
-    public:
-
-    Signal(char intersection,int time){
-        addSignal(intersection,time);  
+public:
+    Signal(char intersection, int time)
+    {
+        addSignal(intersection, time);
     }
 
     /******************
     Adding a new signal
     ******************/
 
-    void addSignal(char intersection,int time){
-        signalTimer=time;
-        signalIntersection=intersection;
+    void addSignal(char intersection, int time)
+    {
+        signalTimer = time;
+        signalIntersection = intersection;
     }
 
     /********************
     Setting signal status
     ********************/
 
-    void setStatus(bool status){
-        signalStatus=status;
+    void setStatus(bool status)
+    {
+        signalStatus = status;
     }
 
     /***************************
     Setting congestion of signal
     ***************************/
 
-    void setCongestion(int k){
-        congestion=k;
+    void setCongestion(int k)
+    {
+        congestion = k;
     }
 
     /******************************
     Getting congestion for a signal
     ******************************/
 
-    int getCongestion(){
+    int getCongestion()
+    {
         return congestion;
     }
 
@@ -305,7 +300,8 @@ class Signal
     Getting signal status for a signal
     *********************************/
 
-    bool getSignalStatus(){
+    bool getSignalStatus()
+    {
         return signalStatus;
     }
 
@@ -313,7 +309,8 @@ class Signal
     Getting green time for a signal
     ******************************/
 
-    int getSignalTimer(){
+    int getSignalTimer()
+    {
         return signalTimer;
     }
 
@@ -321,8 +318,10 @@ class Signal
     Updating signal time
     *******************/
 
-    void decrementSignalTimer(){
-        if(signalTimer>0){
+    void decrementSignalTimer()
+    {
+        if (signalTimer > 0)
+        {
             signalTimer--;
         }
     }
@@ -331,15 +330,17 @@ class Signal
     Resetting signal timer
     *********************/
 
-    void resetSignalTimer(int nextSignalTime){
-        signalTimer=nextSignalTime; 
+    void resetSignalTimer(int nextSignalTime)
+    {
+        signalTimer = nextSignalTime;
     }
 
     /**************************
     Getting signal intersection
     **************************/
 
-    char getIntersection(){
+    char getIntersection()
+    {
         return signalIntersection;
     }
 
@@ -347,12 +348,11 @@ class Signal
     Recalulating the signal time
     ***************************/
 
-    void reCalculateTime(){
-        signalTimer+=10;
+    void reCalculateTime()
+    {
+        signalTimer += 10;
     }
-
 };
-
 
 /***************
 Congestion Class
@@ -361,38 +361,38 @@ Congestion Class
 class Congestion
 {
     /************************************************************************
-    The congestion class is major player in our traffic network system, it is 
+    The congestion class is major player in our traffic network system, it is
     responsible for the occurence of many complex operations such as vehicle
-    rerouting, updating of signal timer and signal priority. It is a hash 
+    rerouting, updating of signal timer and signal priority. It is a hash
     which outlines the congestion level for a specified road. The congestion
     level is an array representing the amount of congestion for every road in
-    hash, congestionMarker 
+    hash, congestionMarker
     ************************************************************************/
 
     int capacity;
     int size;
-    
-    int* congestionLevel;
-    string* congestionMarker;
-    string* congestionMessage;
-    LinkedList* congestionTable;
 
-    public:
+    int *congestionLevel;
+    string *congestionMarker;
+    string *congestionMessage;
+    LinkedList *congestionTable;
 
+public:
     /**********
     Constructor
     **********/
-    
+
     Congestion(int capacity1)
     {
-        capacity=capacity1;
-        size=0;
-        congestionTable=new LinkedList[capacity];
-        congestionMessage=new string[capacity];
-        congestionLevel=new int[capacity];
-        congestionMarker=new string[capacity];
+        capacity = capacity1;
+        size = 0;
+        congestionTable = new LinkedList[capacity];
+        congestionMessage = new string[capacity];
+        congestionLevel = new int[capacity];
+        congestionMarker = new string[capacity];
 
-        for (int i = 0; i < capacity; i++) {
+        for (int i = 0; i < capacity; i++)
+        {
             congestionLevel[i] = 0;
             congestionMessage[i] = "";
             congestionMarker[i] = "";
@@ -403,20 +403,21 @@ class Congestion
     Hash Function
     ************/
 
-    int hashFunction(const string& key)
-    {   
-        char lastChar=key[key.length()-1];
-        int index=lastChar-'0';  
-    
-        return index%capacity;
+    int hashFunction(const string &key)
+    {
+        char lastChar = key[key.length() - 1];
+        int index = lastChar - '0';
+
+        return index % capacity;
     }
 
     /***********************
     Getting Congestion Level
     ***********************/
 
-    int getCongestionLevel(string roadName){
-        int index=hashFunction(roadName);
+    int getCongestionLevel(string roadName)
+    {
+        int index = hashFunction(roadName);
 
         return congestionLevel[index];
     }
@@ -425,20 +426,20 @@ class Congestion
     Inserting Key and Value
     **********************/
 
-    void insert(const string& key, int value)
+    void insert(const string &key, int value)
     {
-        int index=hashFunction(key);
-        congestionTable[index].insert(value); 
-        congestionMarker[index]=key;  
+        int index = hashFunction(key);
+        congestionTable[index].insert(value);
+        congestionMarker[index] = key;
     }
 
     /**********************
     Searching Key and Value
     **********************/
 
-    int search(const string& key)
+    int search(const string &key)
     {
-        int index=hashFunction(key);
+        int index = hashFunction(key);
         return congestionTable[index].search(index);
     }
 
@@ -446,49 +447,52 @@ class Congestion
     Updating congestion for a road
     *****************************/
 
-    void updateCongestion(Edge* edge){
+    void updateCongestion(Edge *edge)
+    {
 
-        int totalVehicles=edge->vehicleCount;  
-        int index=hashFunction(edge->name);
+        int totalVehicles = edge->vehicleCount;
+        int index = hashFunction(edge->name);
 
         congestionLevel[index] = totalVehicles;
 
         /****************************************************
         Generating congestion message based on our very own
-        congestion threshold, the congestion threshold is 
+        congestion threshold, the congestion threshold is
         set according to the number of vehicles on a specific
         road.
         ****************************************************/
 
-        if (totalVehicles<=3){
+        if (totalVehicles <= 3)
+        {
             congestionMessage[index] = "Low congestion";
         }
 
-        else if (totalVehicles<=6){
+        else if (totalVehicles <= 6)
+        {
             congestionMessage[index] = "Moderate congestion";
         }
 
-        else{
+        else
+        {
             congestionMessage[index] = "High congestion";
         }
-
     }
 
     /********************
     Displaying Congestion
     ********************/
 
-    void displayCongestion() 
+    void displayCongestion()
     {
-        for (int i = 0; i < capacity; i++) {
-            if(congestionLevel[i]!=0)
+        for (int i = 0; i < capacity; i++)
+        {
+            if (congestionLevel[i] != 0)
             {
-                cout << congestionMarker[i] << " -> (Vehicles: " 
-                     << congestionLevel[i] << "), (Congestion Level: " 
+                cout << congestionMarker[i] << " -> (Vehicles: "
+                     << congestionLevel[i] << "), (Congestion Level: "
                      << congestionMessage[i] << ")" << endl;
             }
         }
-        
     }
 };
 
@@ -499,7 +503,7 @@ Hazard Node Struct
 struct hazardNode
 {
     /********************************************************
-    Hazard status indicates if their is hazard, start and end 
+    Hazard status indicates if their is hazard, start and end
     represent starting and ending intersections respectively,
     the next pointer points to the next hazard.
     ********************************************************/
@@ -507,17 +511,18 @@ struct hazardNode
     bool hazardStatus;
     char start;
     char end;
-    hazardNode* next;
+    hazardNode *next;
 
     /**********
     Constructor
     **********/
 
-    hazardNode(bool status,char start1,char end1){
-        hazardStatus=status;
-        start=start1;
-        end=end1;
-        next=nullptr;
+    hazardNode(bool status, char start1, char end1)
+    {
+        hazardStatus = status;
+        start = start1;
+        end = end1;
+        next = nullptr;
     }
 };
 
@@ -527,46 +532,49 @@ Hazard Class
 
 class Hazard
 {
-    private:
+private:
+    hazardNode *head;
 
-    hazardNode* head;
-
-    public:
-
+public:
     /**********
     Constructor
     **********/
 
-    Hazard(){
-        head=nullptr;
+    Hazard()
+    {
+        head = nullptr;
     }
 
     /***************
     Inserting hazard
     ***************/
 
-    void insertHazard(bool status,char start,char end){
+    void insertHazard(bool status, char start, char end)
+    {
 
-        hazardNode* newNode=new hazardNode(status,start,end);
+        hazardNode *newNode = new hazardNode(status, start, end);
 
         /**************
         Empty List Case
         **************/
 
-        if(head==nullptr){
-            head=newNode;
-        } 
+        if (head == nullptr)
+        {
+            head = newNode;
+        }
 
         /******************
         Non Empty List Case
         ******************/
-        
-        else{
 
-            hazardNode* temp=head;
-            
-            while(temp->next!=nullptr){
-                temp=temp->next;
+        else
+        {
+
+            hazardNode *temp = head;
+
+            while (temp->next != nullptr)
+            {
+                temp = temp->next;
             }
 
             temp->next = newNode;
@@ -577,22 +585,25 @@ class Hazard
     Checking for hazard in a specified road
     **************************************/
 
-    bool checkHazard(char start,char end){
-        
-        hazardNode* temp=head;
-        
-        while(temp!=nullptr){
-            
-            if(temp->start==start && temp->end==end && temp->hazardStatus){
+    bool checkHazard(char start, char end)
+    {
+
+        hazardNode *temp = head;
+
+        while (temp != nullptr)
+        {
+
+            if (temp->start == start && temp->end == end && temp->hazardStatus)
+            {
                 return true;
             }
-            
-            temp=temp->next;
+
+            temp = temp->next;
         }
 
         return false;
     }
-    
+
     /*****************
     Displaying Hazards
     *****************/
@@ -600,19 +611,19 @@ class Hazard
     void displayHazards()
     {
 
-        hazardNode* temp=head;
+        hazardNode *temp = head;
         string status;
-        
-        while(temp!=nullptr) 
+
+        while (temp != nullptr)
         {
-            if(temp->hazardStatus)
+            if (temp->hazardStatus)
             {
-                status="Blocked";
+                status = "Blocked";
             }
 
             else
             {
-                status="Clear";
+                status = "Clear";
             }
 
             if (status == "Blocked")
@@ -620,7 +631,7 @@ class Hazard
                 cout << temp->start << " to " << temp->end << " is " << status << endl;
             }
 
-            temp=temp->next;
+            temp = temp->next;
         }
     }
 };
@@ -629,73 +640,70 @@ class Hazard
 Priority Queue Class
 *******************/
 
-class PriorityQueue 
+class PriorityQueue
 {
 
-    private:
-    
-    pair<int, char>* heap;  
-    int capacity;           
-    int size;               
+private:
+    pair<int, char> *heap;
+    int capacity;
+    int size;
 
-    void swap(pair<int, char>& a,pair<int, char>& b)
+    void swap(pair<int, char> &a, pair<int, char> &b)
     {
-        pair<int, char> temp=a;
-        a=b;
-        b=temp;
+        pair<int, char> temp = a;
+        a = b;
+        b = temp;
     }
 
     void queueheapifyUp(int index)
     {
         int parent = (index - 1) / 2;
-        if (index > 0 && heap[index].first < heap[parent].first) 
+        if (index > 0 && heap[index].first < heap[parent].first)
         {
             swap(heap[index], heap[parent]);
             queueheapifyUp(parent);
         }
     }
 
-    void queueheapifyDown(int index) 
+    void queueheapifyDown(int index)
     {
         int left = 2 * index + 1;
         int right = 2 * index + 2;
         int smallest = index;
 
-        if (left < size && heap[left].first < heap[smallest].first) 
+        if (left < size && heap[left].first < heap[smallest].first)
         {
             smallest = left;
         }
 
-        if (right < size && heap[right].first < heap[smallest].first) 
+        if (right < size && heap[right].first < heap[smallest].first)
         {
             smallest = right;
         }
 
-        if (smallest != index) 
+        if (smallest != index)
         {
             swap(heap[index], heap[smallest]);
             queueheapifyDown(smallest);
         }
     }
 
-    public:
-    
-    PriorityQueue(int cap) 
+public:
+    PriorityQueue(int cap)
     {
         capacity = cap;
         size = 0;
         heap = new pair<int, char>[capacity];
     }
 
-
     ~PriorityQueue()
     {
         delete[] heap;
     }
 
-    void push(pair<int, char> element) 
+    void push(pair<int, char> element)
     {
-        if (size == capacity) 
+        if (size == capacity)
         {
             cout << "Priority Queue is full!" << endl;
             return;
@@ -706,18 +714,18 @@ class PriorityQueue
         size++;
     }
 
-    pair<int, char> top() 
+    pair<int, char> top()
     {
-        if (size == 0) 
+        if (size == 0)
         {
-            return {2147483647, '\0'};  
+            return {2147483647, '\0'};
         }
         return heap[0];
     }
 
-    void pop() 
+    void pop()
     {
-        if (size == 0) 
+        if (size == 0)
         {
             cout << "Priority Queue is empty!" << endl;
             return;
@@ -727,12 +735,11 @@ class PriorityQueue
         queueheapifyDown(0);
     }
 
-    bool empty() 
+    bool empty()
     {
         return size == 0;
     }
 };
-
 
 /********************
 Traffic Network Class
@@ -741,24 +748,23 @@ Traffic Network Class
 class TrafficNetwork
 {
     /**********************************************************
-    This class implements the full traffic network, 
-    encompassing various key components. It includes 
-    an array of intersection pointers, representing all 
-    available intersections within the system, an array 
-    of traffic signals indicating the presence of signals 
-    at multiple locations, and an array of congestion levels 
+    This class implements the full traffic network,
+    encompassing various key components. It includes
+    an array of intersection pointers, representing all
+    available intersections within the system, an array
+    of traffic signals indicating the presence of signals
+    at multiple locations, and an array of congestion levels
     that track the traffic density on each road in the network.
     **********************************************************/
 
-    public:
-    
-    Node* intersections;
+public:
+    Node *intersections;
     int capacity;
     int size;
-    Signal* signal[100];
+    Signal *signal[100];
     int roadCount;
     int signalCount;
-    Congestion* congestionLevels; 
+    Congestion *congestionLevels;
     bool originalSignal[100];
     Hazard hazard;
 
@@ -768,33 +774,35 @@ class TrafficNetwork
 
     TrafficNetwork(int capacity1)
     {
-        capacity=capacity1;
-        size=0;
-        intersections=new Node[capacity];
-        roadCount=0;
-        signalCount=0;
+        capacity = capacity1;
+        size = 0;
+        intersections = new Node[capacity];
+        roadCount = 0;
+        signalCount = 0;
         congestionLevels = new Congestion(capacity);
 
-        for(int i=0; i<100; i++)
+        for (int i = 0; i < 100; i++)
         {
-            originalSignal[i]=false;
+            originalSignal[i] = false;
         }
-
     }
 
     /****************
     Searching Network
     ****************/
 
-    bool searchNetwork(char data){
+    bool searchNetwork(char data)
+    {
 
-    /*****************************************
-    Checking if an intersection already exists
-    in our traffic network system.
-    *****************************************/
+        /*****************************************
+        Checking if an intersection already exists
+        in our traffic network system.
+        *****************************************/
 
-        for(int i=0;i<size;i++){
-            if(intersections[i].value==data){
+        for (int i = 0; i < size; i++)
+        {
+            if (intersections[i].value == data)
+            {
                 return true;
             }
         }
@@ -806,20 +814,23 @@ class TrafficNetwork
     Adding new intersection in our traffic network
     *********************************************/
 
-    void addIntersection(char data){
+    void addIntersection(char data)
+    {
 
         /*********************************************
         Handling cases, where network capacity is full
-        and no more intersections can be added. If an 
-        intersection already exists in our network it 
+        and no more intersections can be added. If an
+        intersection already exists in our network it
         shall not be added again.
         *********************************************/
 
-        if(size>=capacity){
+        if (size >= capacity)
+        {
             return;
         }
 
-        if(searchNetwork(data)){
+        if (searchNetwork(data))
+        {
             return;
         }
 
@@ -827,112 +838,110 @@ class TrafficNetwork
         Updating intersections and count
         *******************************/
 
-        intersections[size].value=data;
+        intersections[size].value = data;
         size++;
-
     }
 
     /***********************************
     Adding a road in the traffic network
     ***********************************/
 
-    void addRoad(char start,char end,int weight) 
+    void addRoad(char start, char end, int weight)
     {
-        Node* startNode=nullptr;
-        Node* endNode=nullptr;
-        string roadName="Road# "+to_string(roadCount+1);
-    
+        Node *startNode = nullptr;
+        Node *endNode = nullptr;
+        string roadName = "Road# " + to_string(roadCount + 1);
+
         /**************************
         Finding start and end nodes
         **************************/
 
-        for (int i = 0; i < size; i++) 
+        for (int i = 0; i < size; i++)
         {
-            if (intersections[i].value == start) 
+            if (intersections[i].value == start)
             {
                 startNode = &intersections[i];
             }
-    
-            if (intersections[i].value == end) 
+
+            if (intersections[i].value == end)
             {
                 endNode = &intersections[i];
             }
         }
-    
+
         /***************************************
         If either road is not found then no need
         to add to the traffic network.
         ***************************************/
 
-        if (startNode == nullptr || endNode == nullptr) 
+        if (startNode == nullptr || endNode == nullptr)
         {
             return;
         }
-    
+
         /*********************************
         Creating an edge from start to end
         *********************************/
 
-        Edge* newEdge1 = new Edge(weight, end, roadName);
-        
-        if (startNode->head == nullptr) 
+        Edge *newEdge1 = new Edge(weight, end, roadName);
+
+        if (startNode->head == nullptr)
         {
             startNode->head = newEdge1;
             startNode->tail = newEdge1;
-        } 
+        }
 
-        else 
+        else
         {
             startNode->tail->next = newEdge1;
             startNode->tail = newEdge1;
         }
-    
+
         /*********************************
         Creating an edge from end to start
         **********************************/
 
-        Edge* newEdge2 = new Edge(weight, start, roadName);
-        
-        if (endNode->head == nullptr) 
+        Edge *newEdge2 = new Edge(weight, start, roadName);
+
+        if (endNode->head == nullptr)
         {
             endNode->head = newEdge2;
             endNode->tail = newEdge2;
         }
 
-        else 
+        else
         {
             endNode->tail->next = newEdge2;
             endNode->tail = newEdge2;
         }
-    
+
         /**********************
         Updating the road count
         **********************/
 
         roadCount++;
-    
-        return;
 
+        return;
     }
 
-    void currentroad(char start, char end) 
+    void currentroad(char start, char end)
     {
 
-        for (int i = 0; i < size; i++) 
+        for (int i = 0; i < size; i++)
         {
-            if (intersections[i].value == start) 
-            { 
-                Edge* edge = intersections[i].head;
-                while (edge != nullptr) 
-                { 
-                    if (edge->destination == end) 
-                    { 
-                        edge->vehicleCount++; 
+            if (intersections[i].value == start)
+            {
+                Edge *edge = intersections[i].head;
+                while (edge != nullptr)
+                {
+                    if (edge->destination == end)
+                    {
+                        edge->vehicleCount++;
                         congestionLevels->insert(edge->name, edge->vehicleCount);
-                        congestionLevels->updateCongestion(edge); 
-                        return; 
+                        congestionLevels->updateCongestion(edge);
+                        return;
                     }
-                    edge = edge->next; 
+                    edge = edge->next;
                 }
             }
         }
@@ -943,23 +952,23 @@ class TrafficNetwork
     *************************/
 
     void displayNetwork()
-    { 
-        for(int i=0;i<size;i++)
-        { 
-            cout<<"Intersection "<<intersections[i].value<<": "; 
-            Edge* current=intersections[i].head; 
-            
-            while(current!=nullptr)
-            { 
-                cout << "("<<current->destination<<", "<< current->weight << ")"; 
-                current=current->next; 
+    {
+        for (int i = 0; i < size; i++)
+        {
+            cout << "Intersection " << intersections[i].value << ": ";
+            Edge *current = intersections[i].head;
+
+            while (current != nullptr)
+            {
+                cout << "(" << current->destination << ", " << current->weight << ")";
+                current = current->next;
                 cout << " ";
-            } 
-            cout<<endl; 
-        } 
+            }
+            cout << endl;
+        }
         return;
     }
-    
+
     int getSize()
     {
         return size;
@@ -969,124 +978,126 @@ class TrafficNetwork
     Getting location of a specified intersection
     *******************************************/
 
-    int getNodeIndex(char value) 
+    int getNodeIndex(char value)
     {
-        for (int i = 0; i < size; i++) 
+        for (int i = 0; i < size; i++)
         {
             if (intersections[i].value == value)
             {
-                    return i;
+                return i;
             }
         }
-        return -1; 
-    }    
+        return -1;
+    }
     /******************************************
      Finding Shortest Path Using The Dijkstra’s
-     Algorithm 
+     Algorithm
     *******************************************/
-    pair<int, char*> shortestPath(char start, char end) 
+    pair<int, char *> shortestPath(char start, char end)
     {
-        int* distances = new int[size];
-        bool* visited = new bool[size];
-        int* parent = new int[size];  
-    
-        for (int i = 0; i < size; i++) 
+        int *distances = new int[size];
+        bool *visited = new bool[size];
+        int *parent = new int[size];
+
+        for (int i = 0; i < size; i++)
         {
             distances[i] = 99999;
             visited[i] = false;
-            parent[i] = -1;  // Initialize parent array
+            parent[i] = -1; // Initialize parent array
         }
-    
+
         int startIndex = getNodeIndex(start);
         int endIndex = getNodeIndex(end);
-    
-        if (startIndex == -1 || endIndex == -1) 
+
+        if (startIndex == -1 || endIndex == -1)
         {
             cout << "Start or end intersection not found!" << endl;
             return {99999, nullptr};
         }
-    
+
         distances[startIndex] = 0;
-    
-        while (true) 
+
+        while (true)
         {
             int minDistance = 99999;
             int currentNode = -1;
-    
+
             // Find the unvisited node with the smallest distance
-            for (int i = 0; i < size; i++) 
+            for (int i = 0; i < size; i++)
             {
-                if (!visited[i] && distances[i] < minDistance) 
+                if (!visited[i] && distances[i] < minDistance)
                 {
                     minDistance = distances[i];
                     currentNode = i;
                 }
             }
-    
-            if (currentNode == -1) 
+
+            if (currentNode == -1)
             {
-                break; 
+                break;
             }
-    
+
             visited[currentNode] = true;
-    
-            if (currentNode == endIndex) 
+
+            if (currentNode == endIndex)
             {
                 break; // Reached the destination
             }
-    
-            Edge* edge = intersections[currentNode].head;
-            while (edge != nullptr) 
+
+            Edge *edge = intersections[currentNode].head;
+            while (edge != nullptr)
             {
                 int neighborIndex = getNodeIndex(edge->destination);
-                if (neighborIndex != -1 && !visited[neighborIndex]) 
+                if (neighborIndex != -1 && !visited[neighborIndex])
                 {
                     int newDistance = distances[currentNode] + edge->weight;
-                    if (newDistance < distances[neighborIndex]) 
+                    if (newDistance < distances[neighborIndex])
                     {
                         distances[neighborIndex] = newDistance;
-                        parent[neighborIndex] = currentNode;  
+                        parent[neighborIndex] = currentNode;
                     }
                 }
                 edge = edge->next;
             }
         }
-    
+
         // Reconstruct the path from the parent array
-        char* finalPath = new char[size + 1];
+        char *finalPath = new char[size + 1];
         int pathIndex = 0;
         int currentNode = endIndex;
-    
-        while (currentNode != -1) 
+
+        while (currentNode != -1)
         {
             finalPath[pathIndex++] = intersections[currentNode].value;
             currentNode = parent[currentNode];
         }
-    
+
         finalPath[pathIndex] = '\0';
-    
-        for (int i = 0; i < pathIndex / 2; i++) 
+
+        for (int i = 0; i < pathIndex / 2; i++)
         {
             swap(finalPath[i], finalPath[pathIndex - i - 1]);
         }
-    
+
         return {distances[endIndex], finalPath};
     }
 
-
-
     /******************************************
-     Overriding The Signals for the Emergency 
+     Overriding The Signals for the Emergency
      Vehicles To Pass
     *******************************************/
 
-    void overrideSignal(char intersection) 
+    void overrideSignal(char intersection)
     {
-        for (int i = 0; i < signalCount; i++) {
+        for (int i = 0; i < signalCount; i++)
+        {
             originalSignal[i] = signal[i]->getSignalStatus();
-            if (signal[i]->getIntersection() == intersection) {
+            if (signal[i]->getIntersection() == intersection)
+            {
                 signal[i]->setStatus(true);
-            } else {
+            }
+            else
+            {
                 signal[i]->setStatus(false);
             }
         }
@@ -1099,7 +1110,7 @@ class TrafficNetwork
 
     void restoreSignal()
     {
-        for(int i=0; i<signalCount; i++)
+        for (int i = 0; i < signalCount; i++)
         {
             signal[i]->setStatus(originalSignal[i]);
         }
@@ -1116,10 +1127,9 @@ class TrafficNetwork
 
     int heuristic(char start, char end)
     {
-          return abs(end - start);
+        return abs(end - start);
     }
 
-    
     pair<int, string> emergencyrouteAStar(char start, char end, string p)
     {
         cout << "Starting A* search from " << start << " to " << end << endl;
@@ -1174,7 +1184,7 @@ class TrafficNetwork
             Edge *edge = intersections[currentIndex].head;
             while (edge != nullptr)
             {
-                if(hazard.checkHazard(currentNode, edge->destination))
+                if (hazard.checkHazard(currentNode, edge->destination))
                 {
                     cout << "Blocked road detected from " << currentNode << " to " << edge->destination << endl;
                     edge = edge->next;
@@ -1190,10 +1200,10 @@ class TrafficNetwork
                         costFromStart[neighborIndex] = newCost;
                         totalCost[neighborIndex] = newCost + heuristic(edge->destination, end);
                         previous[neighborIndex] = currentNode;
-                        
-                        if(p == "High")
+
+                        if (p == "High")
                         {
-                            totalCost[neighborIndex] -= 10; 
+                            totalCost[neighborIndex] -= 10;
                         }
                         pq1.push({totalCost[neighborIndex], edge->destination});
                     }
@@ -1212,22 +1222,20 @@ class TrafficNetwork
              << endl;
         return {costFromStart[endIndex], path};
     }
-
 };
 
 /****************
 Vehicle Path Node
 ****************/
 
-class VehiclePathNode 
+class VehiclePathNode
 {
-    public:
+public:
+    char *path;
+    int travelTime;
+    VehiclePathNode *next;
 
-    char* path; 
-    int travelTime; 
-    VehiclePathNode* next; 
-
-    VehiclePathNode(char* p, int time) 
+    VehiclePathNode(char *p, int time)
     {
         path = p;
         travelTime = time;
@@ -1241,88 +1249,87 @@ Vehicle Class
 
 class Vehicle
 {
-    public:
-    
+public:
     string id;
     char start;
     char end;
 
     int dist;
-    char* path;
+    char *path;
     char current;
     int curIndex;
-    
-    VehiclePathNode* head;
-    
+
+    VehiclePathNode *head;
+
     Vehicle(string name, char st, char en)
     {
         id = name;
         start = st;
         end = en;
-        
+
         dist = 0;
         path = NULL;
         current = start;
         curIndex = 0;
-        
+
         head = NULL;
     }
-    
-    void shortestdis(TrafficNetwork& network)
+
+    void shortestdis(TrafficNetwork &network)
     {
-        pair<int, char*> result = network.shortestPath(start, end);
+        pair<int, char *> result = network.shortestPath(start, end);
         int endpoint = network.getNodeIndex(end);
-        
+
         int shortestDistance = result.first;
         path = result.second;
-        
+
         dist = shortestDistance;
     }
-    
-    void movecar() //current postion of the vehicle changes
+
+    void movecar() // current postion of the vehicle changes
     {
         curIndex++;
         current = path[curIndex];
-        cout << id << ": " << current;    
+        cout << id << ": " << current;
         cout << endl;
     }
-    
-    void addVehiclePath(char* path, int travelTime) 
-    {
-        VehiclePathNode* newNode = new VehiclePathNode(path, travelTime);
 
-        if (head == nullptr) 
+    void addVehiclePath(char *path, int travelTime)
+    {
+        VehiclePathNode *newNode = new VehiclePathNode(path, travelTime);
+
+        if (head == nullptr)
         {
             head = newNode;
-        } 
-        
-        else 
+        }
+
+        else
         {
-            VehiclePathNode* current = head;
-            while (current->next != nullptr) 
+            VehiclePathNode *current = head;
+            while (current->next != nullptr)
             {
                 current = current->next;
             }
             current->next = newNode;
         }
     }
-    
+
     void displayVehPath()
     {
-        VehiclePathNode* current = head;
-        while (current != nullptr) 
+        VehiclePathNode *current = head;
+        while (current != nullptr)
         {
             cout << "(Path: " << current->path << "), (Travel Time: " << current->travelTime << ")" << endl;
             current = current->next;
         }
         cout << endl;
-    }    
+    }
 
-    int getTravelTime(){
+    int getTravelTime()
+    {
         return dist;
     }
 };
-
 
 /**********************
 Emergency Vehicle Class
@@ -1330,14 +1337,14 @@ Emergency Vehicle Class
 
 class EmergencyVehicle
 {
-    public:
+public:
     string vehicleID;
     char startIntersection;
     char endIntersection;
     string priority;
     char current;
     string path;
-    
+
     EmergencyVehicle(string vID, char start, char end, string pLevel)
     {
         vehicleID = vID;
@@ -1346,13 +1353,13 @@ class EmergencyVehicle
         priority = pLevel;
         current = start;
     }
-    
-    string getvehicleID() const 
+
+    string getvehicleID() const
     {
         return vehicleID;
     }
 
-   void route(TrafficNetwork &network)
+    void route(TrafficNetwork &network)
     {
         network.overrideSignal(startIntersection);
 
@@ -1365,12 +1372,11 @@ class EmergencyVehicle
         }
         else
         {
-            cout<<"Route Found: "<<path<<endl;
+            cout << "Route Found: " << path << endl;
         }
 
         network.restoreSignal();
     }
-
 };
 
 /********
@@ -1379,79 +1385,77 @@ Map Class
 
 class Map
 {
-    
+
     /**************************************************************************************
-    This is the core class of our traffic management system, designed to efficiently manage 
-    and simulate traffic network operations. It serves as the central hub where all other 
-    components of the system interact, enabling the simulation of complex traffic events 
-    and behaviors. By coordinating the various system modules, this class plays a pivotal 
+    This is the core class of our traffic management system, designed to efficiently manage
+    and simulate traffic network operations. It serves as the central hub where all other
+    components of the system interact, enabling the simulation of complex traffic events
+    and behaviors. By coordinating the various system modules, this class plays a pivotal
     role in ensuring smooth and dynamic traffic management.
     **************************************************************************************/
 
     TrafficNetwork graph;
-    Vehicle* vehicles[100]; 
+    Vehicle *vehicles[100];
     Hazard hazard;
-    Signal* signal[100];
-    EmergencyVehicle* emergencyVehicles[100];
+    Signal *signal[100];
+    EmergencyVehicle *emergencyVehicles[100];
 
     int signalCount;
     int vehicleCount;
     int emergencyvehicleCount;
     int resolvedCount;
 
-    public:
-
+public:
     /**********
     Constructor
     **********/
 
     Map() : graph(100)
     {
-        vehicleCount=0;
-        emergencyvehicleCount=0;
-        signalCount=0;
-        resolvedCount=0;
+        vehicleCount = 0;
+        emergencyvehicleCount = 0;
+        signalCount = 0;
+        resolvedCount = 0;
         roadCSV();
         vehicleCSV();
         hazardCSV();
         signalCSV();
         emergencyVehiclesCSV();
-
     }
 
     /***************
     Reading Road CSV
     ***************/
-    
+
     void roadCSV()
     {
         ifstream file("road_network.csv");
         string line;
         int count = 0;
 
-        if(!file.is_open())
+        if (!file.is_open())
         {
-            cout<<"Error opening file!"<<endl;
+            cout << "Error opening file!" << endl;
         }
-    
-        while (getline(file, line)) 
+
+        while (getline(file, line))
         {
-            string weight="";
-            
-            if(!line.empty() && count>0)
+            string weight = "";
+
+            if (!line.empty() && count > 0)
             {
-                char intersection1=line[0];
-                char intersection2=line[2];
-                
-                for(int i=4; i < line.length(); i++)
+                char intersection1 = line[0];
+                char intersection2 = line[2];
+
+                for (int i = 4; i < line.length(); i++)
                 {
-                    weight+=line[i];
+                    weight += line[i];
                 }
-    
-                int travelTime = stoi(weight);  
+
+                int travelTime = stoi(weight);
                 graph.addIntersection(intersection1);
                 graph.addIntersection(intersection2);
-                graph.addRoad(intersection1,intersection2,travelTime);
+                graph.addRoad(intersection1, intersection2, travelTime);
             }
 
             count++;
@@ -1463,31 +1467,31 @@ class Map
     /******************
     Reading Vehicle CSV
     ******************/
-    
+
     void vehicleCSV()
     {
         ifstream file("vehicles.csv");
         string line;
         int count = 0;
 
-        if(!file.is_open())
+        if (!file.is_open())
         {
-            cout<<"Error opening file!"<<endl;
+            cout << "Error opening file!" << endl;
         }
-    
-        while (getline(file, line)) 
+
+        while (getline(file, line))
         {
-            if(!line.empty() && count>0)
+            if (!line.empty() && count > 0)
             {
                 stringstream ss(line);
                 string vehID, startStr, endStr;
- 
+
                 getline(ss, vehID, ',');
                 getline(ss, startStr, ',');
                 getline(ss, endStr, ',');
-                
+
                 vehicles[vehicleCount] = new Vehicle(vehID, startStr[0], endStr[0]);
-                vehicleCount++; 
+                vehicleCount++;
             }
 
             count++;
@@ -1504,87 +1508,84 @@ class Map
     {
         ifstream file("road_closures.csv");
         string line;
-        int count=0;
+        int count = 0;
 
-        if(!file.is_open())
+        if (!file.is_open())
         {
-            cout<<"Error opening file!"<<endl;
+            cout << "Error opening file!" << endl;
         }
-    
-        while (getline(file, line)) 
+
+        while (getline(file, line))
         {
-            string message;   
-            if(!line.empty() && count>0)
+            string message;
+            if (!line.empty() && count > 0)
             {
-                bool status=false;
-                char intersection1=line[0];
-                char intersection2=line[2];
-                
-                for(int i=4; i < line.length(); i++)
+                bool status = false;
+                char intersection1 = line[0];
+                char intersection2 = line[2];
+
+                for (int i = 4; i < line.length(); i++)
                 {
-                    message+=line[i];
+                    message += line[i];
                 }
-    
-                if(message=="Blocked"){
-                    status=true;
+
+                if (message == "Blocked")
+                {
+                    status = true;
                 }
-                
-                hazard.insertHazard(status,intersection1,intersection2);
+
+                hazard.insertHazard(status, intersection1, intersection2);
             }
 
             count++;
-
         }
 
         setSignalStatus();
         file.close();
-
     }
-    
+
     /*****************
     Reading Signal CSV
     *****************/
 
     void signalCSV()
     {
-        
+
         ifstream file("traffic_signals.csv");
         string line;
-        int count=0;
+        int count = 0;
 
-        if(!file.is_open())
+        if (!file.is_open())
         {
-            cout<<"Error opening file!"<<endl;
+            cout << "Error opening file!" << endl;
         }
-    
-        while (getline(file, line)) 
+
+        while (getline(file, line))
         {
-             
-            if(!line.empty() && count>0)
+
+            if (!line.empty() && count > 0)
             {
-                string timeString="";
-        
-                char intersection=line[0];
-                
-                for(int i=2; i < line.length(); i++)
+                string timeString = "";
+
+                char intersection = line[0];
+
+                for (int i = 2; i < line.length(); i++)
                 {
-                    timeString+=line[i];
+                    timeString += line[i];
                 }
-                
-                int time=stoi(timeString);
-                signal[signalCount]=new Signal(intersection,time);
-                heapifyUp(signalCount);  
+
+                int time = stoi(timeString);
+                signal[signalCount] = new Signal(intersection, time);
+                heapifyUp(signalCount);
                 signalCount++;
             }
 
             count++;
-
         }
 
         file.close();
-
     }
-    
+
     /*****************************
     Reading Emergency Vehicles CSV
     *****************************/
@@ -1595,15 +1596,15 @@ class Map
         string line;
         int count = 0;
 
-        if(!file.is_open())
+        if (!file.is_open())
         {
             cout << "Error opening file: emergency_vehicles.csv" << endl;
-            return; 
+            return;
         }
 
-        while (getline(file, line)) 
+        while (getline(file, line))
         {
-            if (line.empty() || count == 0) 
+            if (line.empty() || count == 0)
             {
                 count++;
                 continue;
@@ -1622,18 +1623,19 @@ class Map
         }
 
         file.close();
-    
     }
 
     /******************
     Updating Hazard CSV
     ******************/
 
-    void updateHazardCSV(char intersection1,char intersection2, string status){
-        ofstream file("road_closures.csv",ios::app);
+    void updateHazardCSV(char intersection1, char intersection2, string status)
+    {
+        ofstream file("road_closures.csv", ios::app);
 
-        if(!file.is_open()){
-            cout<<"Unable to open road_closures.csv file!"<<endl;
+        if (!file.is_open())
+        {
+            cout << "Unable to open road_closures.csv file!" << endl;
             return;
         }
 
@@ -1641,60 +1643,68 @@ class Map
         Writing new data to CSV
         **********************/
 
-        file<<intersection1<<","<<intersection2<<","<<status<<"\n";
-        hazard.insertHazard(true,intersection1,intersection2);
+        file << intersection1 << "," << intersection2 << "," << status << "\n";
+        hazard.insertHazard(true, intersection1, intersection2);
 
         file.close();
 
-        cout<<"New data appended to road_closures.csv successfully"<<endl;
-
+        cout << "New data appended to road_closures.csv successfully" << endl;
     }
 
     /******************************
     Updating Emergency Vehicles CSV
     ******************************/
-    
-    void updateEmergencyCSV(string EV,char intersection1,char intersection2, string level){
-        
+
+    void updateEmergencyCSV(string EV, char intersection1, char intersection2, string level)
+    {
+
         ifstream file1("emergency_vehicles.csv");
-        
-        if(!file1.is_open()){
-            cout<<"Unable to open emergency_vehicles.csv\n";
-            return ;
+
+        if (!file1.is_open())
+        {
+            cout << "Unable to open emergency_vehicles.csv\n";
+            return;
         }
 
         string line;
 
-        while(getline(file1,line)){
-            
-            int commaPos=-1;
-            
-            for(int i=0;i<line.length();i++){
-                if(line[i]==','){
-                    commaPos=i;
+        while (getline(file1, line))
+        {
+
+            int commaPos = -1;
+
+            for (int i = 0; i < line.length(); i++)
+            {
+                if (line[i] == ',')
+                {
+                    commaPos = i;
                     break;
                 }
             }
 
-            if(commaPos!=-1){
-                string firstColumn="";
+            if (commaPos != -1)
+            {
+                string firstColumn = "";
 
-                for(int i=0;i<commaPos;i++){
-                    firstColumn+=line[i];
+                for (int i = 0; i < commaPos; i++)
+                {
+                    firstColumn += line[i];
                 }
 
-                if(firstColumn==EV){
-                    cout<<EV<<" already exists in CSV can not append it again!"<<endl;
+                if (firstColumn == EV)
+                {
+                    cout << EV << " already exists in CSV can not append it again!" << endl;
                     file1.close();
                     return;
                 }
             }
         }
 
-        ofstream file2("emergency_vehicles.csv",ios::app);
+        ofstream file2("emergency_vehicles.csv", ios::app);
 
-        if(!file2.is_open()){
-            cout<<"Unable to open emergency_vehicles.csv file!"<<endl;
+        if (!file2.is_open())
+        {
+            cout << "Unable to open emergency_vehicles.csv file!" << endl;
             return;
         }
 
@@ -1702,64 +1712,71 @@ class Map
         Writing new data to CSV
         **********************/
 
-        file2<<EV<<","<<intersection1<<","<<intersection2<<","<<level<<"\n";
-        
+        file2 << EV << "," << intersection1 << "," << intersection2 << "," << level << "\n";
+
         file2.close();
         file1.close();
 
         emergencyVehicles[emergencyvehicleCount] = new EmergencyVehicle(EV, intersection1, intersection2, level);
         emergencyvehicleCount++;
 
-
-        cout<<"New data appended to emergency_vehicles.csv successfully"<<endl;
-
+        cout << "New data appended to emergency_vehicles.csv successfully" << endl;
     }
 
     /*******************
     Updating Vehicle CSV
     *******************/
 
-    void updateVehicleCSV(string name,char intersection1,char intersection2){
-        
+    void updateVehicleCSV(string name, char intersection1, char intersection2)
+    {
+
         ifstream file1("vehicles.csv");
-        
-        if(!file1.is_open()){
-            cout<<"Unable to open vehicles.csv\n";
-            return ;
+
+        if (!file1.is_open())
+        {
+            cout << "Unable to open vehicles.csv\n";
+            return;
         }
 
         string line;
 
-        while(getline(file1,line)){
-            
-            int commaPos=-1;
-            
-            for(int i=0;i<line.length();i++){
-                if(line[i]==','){
-                    commaPos=i;
+        while (getline(file1, line))
+        {
+
+            int commaPos = -1;
+
+            for (int i = 0; i < line.length(); i++)
+            {
+                if (line[i] == ',')
+                {
+                    commaPos = i;
                     break;
                 }
             }
 
-            if(commaPos!=-1){
-                string firstColumn="";
+            if (commaPos != -1)
+            {
+                string firstColumn = "";
 
-                for(int i=0;i<commaPos;i++){
-                    firstColumn+=line[i];
+                for (int i = 0; i < commaPos; i++)
+                {
+                    firstColumn += line[i];
                 }
 
-                if(firstColumn==name){
-                    cout<<name<<" already exists in CSV can not append it again!"<<endl;
+                if (firstColumn == name)
+                {
+                    cout << name << " already exists in CSV can not append it again!" << endl;
                     file1.close();
                     return;
                 }
             }
         }
 
-        ofstream file2("vehicles.csv",ios::app);
+        ofstream file2("vehicles.csv", ios::app);
 
-        if(!file2.is_open()){
-            cout<<"Unable to open vehicles.csv file!"<<endl;
+        if (!file2.is_open())
+        {
+            cout << "Unable to open vehicles.csv file!" << endl;
             return;
         }
 
@@ -1767,21 +1784,19 @@ class Map
         Writing new data to CSV
         **********************/
 
-        file2<<name<<","<<intersection1<<","<<intersection2<<"\n";
-        
+        file2 << name << "," << intersection1 << "," << intersection2 << "\n";
+
         file2.close();
         file1.close();
 
-        vehicles[vehicleCount]=new Vehicle(name,intersection1,intersection2);
-        
+        vehicles[vehicleCount] = new Vehicle(name, intersection1, intersection2);
 
-        cout<<"New data appended to vehicles.csv successfully"<<endl;
+        cout << "New data appended to vehicles.csv successfully" << endl;
 
         vehicles[vehicleCount]->shortestdis(graph);
 
-    
-       // dfs(start, end, visited, "", distance, vehicles[i]); 
-        //checkAndUpdatePath(name);
+        // dfs(start, end, visited, "", distance, vehicles[i]);
+        // checkAndUpdatePath(name);
         vehicleCount++;
 
         return;
@@ -1795,22 +1810,25 @@ class Map
 
     void heapifyDown(int index)
     {
-        int parent=index;
-        int left=2*index+1;
-        int right=2*index+2;
+        int parent = index;
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
 
-        if(left<signalCount && signal[left]->getCongestion()>signal[parent]->getCongestion()){
-            parent=left;
+        if (left < signalCount && signal[left]->getCongestion() > signal[parent]->getCongestion())
+        {
+            parent = left;
         }
 
-        if(right<signalCount && signal[right]->getCongestion()>signal[parent]->getCongestion()) {
-            parent=right;
+        if (right < signalCount && signal[right]->getCongestion() > signal[parent]->getCongestion())
+        {
+            parent = right;
         }
 
-        if(parent!=index){
-            Signal* temp=signal[parent];
-            signal[parent]=signal[index];
-            signal[index]=temp;
+        if (parent != index)
+        {
+            Signal *temp = signal[parent];
+            signal[parent] = signal[index];
+            signal[index] = temp;
             heapifyDown(parent);
         }
 
@@ -1819,13 +1837,14 @@ class Map
 
     void heapifyUp(int index)
     {
-        int parent=(index)/2;
+        int parent = (index) / 2;
 
-        if(index>0 && signal[index]->getCongestion()>signal[parent]->getCongestion()){
-            
-            Signal* temp=signal[parent];
-            signal[parent]=signal[index];
-            signal[index]=temp;
+        if (index > 0 && signal[index]->getCongestion() > signal[parent]->getCongestion())
+        {
+
+            Signal *temp = signal[parent];
+            signal[parent] = signal[index];
+            signal[index] = temp;
             heapifyUp(parent);
         }
 
@@ -1834,32 +1853,38 @@ class Map
 
     void buildHeap()
     {
-        for(int i=(signalCount/2)-1;i>=0;i--){
+        for (int i = (signalCount / 2) - 1; i >= 0; i--)
+        {
             heapifyDown(i);
         }
 
         return;
     }
-    
+
     void setSignalStatus()
     {
-        if(signalCount>0){
-            for (int i=0;i<signalCount;i++){
+        if (signalCount > 0)
+        {
+            for (int i = 0; i < signalCount; i++)
+            {
 
-                char intersection=signal[i]->getIntersection();
-                int congestionLevel=0;
+                char intersection = signal[i]->getIntersection();
+                int congestionLevel = 0;
 
-                for(int j=0;j<graph.size;j++){
-                    
-                    Edge* edge=graph.intersections[j].head;
-                    
-                    while(edge!=nullptr){
-                        
-                        if(edge->destination==intersection){
-                            congestionLevel+=graph.congestionLevels->getCongestionLevel(edge->name);
+                for (int j = 0; j < graph.size; j++)
+                {
+
+                    Edge *edge = graph.intersections[j].head;
+
+                    while (edge != nullptr)
+                    {
+
+                        if (edge->destination == intersection)
+                        {
+                            congestionLevel += graph.congestionLevels->getCongestionLevel(edge->name);
                         }
 
-                        edge=edge->next;
+                        edge = edge->next;
                     }
                 }
 
@@ -1868,14 +1893,15 @@ class Map
 
             buildHeap();
 
-            signal[0]->setStatus(true);  
+            signal[0]->setStatus(true);
             cout << "Signal at intersection " << signal[0]->getIntersection()
-                << " is now GREEN (Congestion: " << signal[0]->getCongestion() << ")" << endl;
+                 << " is now GREEN (Congestion: " << signal[0]->getCongestion() << ")" << endl;
 
-            for(int i=1;i<signalCount;i++){
+            for (int i = 1; i < signalCount; i++)
+            {
                 signal[i]->setStatus(false);
-                cout<<"Signal at intersection "<<signal[i]->getIntersection()
-                    <<" is now RED (Congestion: "<<signal[i]->getCongestion()<<")"<<endl;
+                cout << "Signal at intersection " << signal[i]->getIntersection()
+                     << " is now RED (Congestion: " << signal[i]->getCongestion() << ")" << endl;
             }
         }
     }
@@ -1886,7 +1912,7 @@ class Map
 
     void shortestDis()
     {
-        for(int i = 0; i < vehicleCount; i++)
+        for (int i = 0; i < vehicleCount; i++)
         {
             vehicles[i]->shortestdis(graph);
         }
@@ -1896,24 +1922,26 @@ class Map
     Updating Signal Time Based on Congestion Level
     *********************************************/
 
-    void updateSignalTimesBasedOnCongestion() 
+    void updateSignalTimesBasedOnCongestion()
     {
-            
+
         /************************************
         Locating the road where signal exists
         ************************************/
 
-        for (int i = 0; i < signalCount; i++) 
+        for (int i = 0; i < signalCount; i++)
         {
             char intersection = signal[i]->getIntersection();
 
-            for (int j = 0; j < graph.size; j++) 
+            for (int j = 0; j < graph.size; j++)
             {
-                Edge* edge = graph.intersections[j].head;
+                Edge *edge = graph.intersections[j].head;
 
-                while (edge != nullptr) {
-                    if (edge->destination == intersection) {
-                                            
+                while (edge != nullptr)
+                {
+                    if (edge->destination == intersection)
+                    {
+
                         /************************************
                         Checking congestion on the road found
                         ************************************/
@@ -1924,14 +1952,14 @@ class Map
                         Recalculating time for signal if high congestion is detected
                         ***********************************************************/
 
-                        if (congestionLevel > 6) {
+                        if (congestionLevel > 6)
+                        {
                             cout << "High congestion detected at " << edge->name
-                                << ". Recalculating signal time for intersection " 
-                                << intersection << "." << endl;
+                                 << ". Recalculating signal time for intersection "
+                                 << intersection << "." << endl;
 
                             signal[i]->reCalculateTime();
                         }
-
                     }
 
                     edge = edge->next;
@@ -1950,7 +1978,7 @@ class Map
     Displaying path for a specified vehicle
     **************************************/
 
-    void displayVehiclePath(string vehicleID) 
+    void displayVehiclePath(string vehicleID)
     {
         /******************************************
         Traversing until specified vehicle is found
@@ -1958,101 +1986,99 @@ class Map
 
         bool vehicleFound = false;
 
-        for (int i = 0; i < vehicleCount; i++) 
+        for (int i = 0; i < vehicleCount; i++)
         {
             /*************************
             Displaying Vehicle Details
             *************************/
 
-            if (vehicles[i]->id==vehicleID) 
+            if (vehicles[i]->id == vehicleID)
             {
-                cout << "Vehicle ID: " << vehicles[i]->id 
-                    << ", Path: " << vehicles[i]->path 
-                    << ", Distance: " << vehicles[i]->dist << endl;
+                cout << "Vehicle ID: " << vehicles[i]->id
+                     << ", Path: " << vehicles[i]->path
+                     << ", Distance: " << vehicles[i]->dist << endl;
                 vehicleFound = true;
                 break;
             }
         }
 
-        if (!vehicleFound) 
+        if (!vehicleFound)
         {
             cout << "Vehicle with ID " << vehicleID << " not found." << endl;
         }
-
     }
 
-    int pathtime(char* path) 
+    int pathtime(char *path)
     {
         int totalTime = 0;
-    
-        for (int i = 0; path[i] != '\0' && path[i + 1] != '\0'; i++) 
+
+        for (int i = 0; path[i] != '\0' && path[i + 1] != '\0'; i++)
         {
             char current = path[i];
             char next = path[i + 1];
-    
+
             int currentIndex = graph.getNodeIndex(current);
-            if (currentIndex == -1) 
+            if (currentIndex == -1)
             {
-                return -1; 
+                return -1;
             }
-    
-            Edge* edge = graph.intersections[currentIndex].head;
+
+            Edge *edge = graph.intersections[currentIndex].head;
             bool found = false;
-    
-            while (edge != nullptr) 
+
+            while (edge != nullptr)
             {
-                if (edge->destination == next) 
+                if (edge->destination == next)
                 {
-                    totalTime += edge->weight; 
+                    totalTime += edge->weight;
                     found = true;
                     break;
                 }
 
                 edge = edge->next;
             }
-
         }
 
         return totalTime;
     }
-    
-    int reroutetime(char* path, int traveltime)
+
+    int reroutetime(char *path, int traveltime)
     {
         int penalty = 0;
-        for (int i = 0; path[i + 1] != '\0'; i++) 
+        for (int i = 0; path[i + 1] != '\0'; i++)
         {
             char currentIntersection = path[i];
             char nextIntersection = path[i + 1];
             string roadName = "Road# " + to_string(graph.getNodeIndex(currentIntersection) + 1);
-            
+
             int congestionlevel = graph.congestionLevels->getCongestionLevel(roadName);
 
             penalty += congestionlevel;
-        }    
+        }
 
         penalty += traveltime;
 
         return penalty;
     }
-    
-    char* reroutepath(int congestLevel, char intersection, Vehicle* vehicle)
+
+    char *reroutepath(int congestLevel, char intersection, Vehicle *vehicle)
     {
-        VehiclePathNode* currentNode = vehicle->head;
+        VehiclePathNode *currentNode = vehicle->head;
         int min = 999;
-        char* bestPath = nullptr;
-    
+        char *bestPath = nullptr;
+
         while (currentNode != nullptr)
         {
-            char* path = currentNode->path;
+            char *path = currentNode->path;
             for (int i = 0; path[i] != '\0'; i++)
             {
                 char inter = path[i];
                 if (inter == intersection)
                 {
                     int remainingLength = strlen(path) - i;
-                    char* tempPath = new char[remainingLength + 1];
+                    char *tempPath = new char[remainingLength + 1];
                     strcpy(tempPath, path + i);
-    
+
                     bool hazarddead = false;
                     for (int j = 0; tempPath[j] != '\0' && tempPath[j + 1] != '\0'; j++)
                     {
@@ -2062,39 +2088,39 @@ class Map
                             break;
                         }
                     }
-    
+
                     if (hazarddead)
                     {
                         delete[] tempPath;
                         continue;
                     }
-    
+
                     int newTime = pathtime(tempPath);
                     int rtime = reroutetime(tempPath, newTime);
-    
+
                     if (rtime < min)
                     {
                         min = rtime;
                         bestPath = path;
                     }
-    
+
                     delete[] tempPath;
                 }
             }
-    
+
             currentNode = currentNode->next;
         }
-    
+
         return bestPath;
     }
-    
-    bool reroute(char* bestpath, Vehicle* vehicle)
+
+    bool reroute(char *bestpath, Vehicle *vehicle)
     {
         if (reroutetime(vehicle->path, vehicle->dist) == reroutetime(bestpath, pathtime(bestpath)))
         {
             return false;
         }
-        
+
         else
         {
             vehicle->path = bestpath;
@@ -2103,49 +2129,58 @@ class Map
         }
     }
 
-    void move(string vehicleID) {
-        for (int i = 0; i < vehicleCount; i++) {
-            if (vehicles[i]->id == vehicleID) {
+    void move(string vehicleID)
+    {
+        for (int i = 0; i < vehicleCount; i++)
+        {
+            if (vehicles[i]->id == vehicleID)
+            {
                 char currentIntersection = vehicles[i]->current;
                 char nextIntersection = vehicles[i]->path[vehicles[i]->curIndex + 1];
 
                 string roadName = "Road# " + to_string(graph.getNodeIndex(currentIntersection) + 1);
                 int congestionLevel = graph.congestionLevels->getCongestionLevel(roadName);
 
-                if (congestionLevel > 6) {
+                if (congestionLevel > 6)
+                {
                     cout << "Congestion detected on road between " << currentIntersection
-                        << " and " << nextIntersection << " Rerouting vehicle " << vehicles[i]->id << endl;
+                         << " and " << nextIntersection << " Rerouting vehicle " << vehicles[i]->id << endl;
 
-                    char* bestPath = reroutepath(congestionLevel, nextIntersection, vehicles[i]);
-                    if (reroute(bestPath, vehicles[i])) {
+                    char *bestPath = reroutepath(congestionLevel, nextIntersection, vehicles[i]);
+                    if (reroute(bestPath, vehicles[i]))
+                    {
                         cout << "New route has been found for vehicle " << vehicleID << endl;
                         resolvedCount++;
-                    } else {
+                    }
+                    else
+                    {
                         cout << "No alternate route available for vehicle " << vehicleID << " right now" << endl;
                     }
-                } else {
+                }
+                else
+                {
                     // Move the vehicle to the next intersection if no congestion
                     graph.currentroad(currentIntersection, nextIntersection);
                     vehicles[i]->movecar();
 
-                    if (vehicles[i]->current == vehicles[i]->end) {
+                    if (vehicles[i]->current == vehicles[i]->end)
+                    {
                         cout << vehicles[i]->id << " reached its destination" << endl;
 
-                        
-                        for (int j = i; j < vehicleCount - 1; j++) {
+                        for (int j = i; j < vehicleCount - 1; j++)
+                        {
                             vehicles[j] = vehicles[j + 1];
                         }
                         vehicleCount--;
                     }
                 }
-                return; 
+                return;
             }
         }
-        
+
         cout << vehicleID << " not found!" << endl;
     }
 
-    
     void moveVehicle()
     {
         for (int i = 0; i < vehicleCount;)
@@ -2156,18 +2191,18 @@ class Map
             string roadName = "Road# " + to_string(graph.getNodeIndex(currentIntersection) + 1);
             int congestionLevel = graph.congestionLevels->getCongestionLevel(roadName);
 
-            if (congestionLevel > 6) 
+            if (congestionLevel > 6)
             {
                 cout << "Congestion detected on road between " << currentIntersection
-                    << " and " << nextIntersection << ". Rerouting vehicle " << vehicles[i]->id << endl;
+                     << " and " << nextIntersection << ". Rerouting vehicle " << vehicles[i]->id << endl;
 
-                char* bestpath = reroutepath(congestionLevel, nextIntersection, vehicles[i]);
-                
+                char *bestpath = reroutepath(congestionLevel, nextIntersection, vehicles[i]);
+
                 if (reroute(bestpath, vehicles[i]))
                 {
                     cout << "new route has been found";
                 }
-                
+
                 else
                 {
                     cout << "you have no other route available right now";
@@ -2178,12 +2213,12 @@ class Map
                 // Move the vehicle to the next intersection if no congestion
                 graph.currentroad(currentIntersection, nextIntersection);
                 vehicles[i]->movecar();
-                if (vehicles[i]->current == vehicles[i]->end) 
+                if (vehicles[i]->current == vehicles[i]->end)
                 {
                     cout << vehicles[i]->id << " reached its destination." << endl;
 
                     // Remove the vehicle once it has reached its destination
-                    for (int j = i; j < vehicleCount - 1; j++) 
+                    for (int j = i; j < vehicleCount - 1; j++)
                     {
                         vehicles[j] = vehicles[j + 1];
                     }
@@ -2198,10 +2233,10 @@ class Map
             cout << endl;
         }
     }
-    
+
     void checkAndUpdatePath(string vehicleId)
     {
-        Vehicle* vehicle = nullptr;
+        Vehicle *vehicle = nullptr;
         for (int i = 0; i < vehicleCount; i++)
         {
             if (vehicles[i]->id == vehicleId)
@@ -2210,31 +2245,33 @@ class Map
                 break;
             }
         }
-    
+
         for (int i = 1; i < strlen(vehicle->path) - 1; i++)
         {
             char start = vehicle->path[i];
             char reroutestart = vehicle->path[i - 1];
             char end = vehicle->path[i + 1];
-    
+
             if (hazard.checkHazard(start, end))
             {
                 cout << "Hazard found in vehicle " << vehicleId << " route: (" << start << "," << end << ")" << endl;
                 cout << "Current path: " << vehicle->path << endl;
 
                 resolvedCount++;
-                char* bestPath = reroutepath(graph.congestionLevels->getCongestionLevel("Road#"), reroutestart, vehicle);
-    
+                char *bestPath = reroutepath(graph.congestionLevels->getCongestionLevel("Road#"), reroutestart, vehicle);
+
                 if (bestPath != nullptr)
                 {
                     vehicle->path = bestPath;
                     vehicle->curIndex = 0;
                     vehicle->dist = pathtime(bestPath);
-                    cout << "New Path: " << bestPath << endl << endl;
+                    cout << "New Path: " << bestPath << endl
+                         << endl;
                 }
                 else
                 {
-                    cout << "No alternative path available for vehicle: " << vehicleId << endl << endl;
+                    cout << "No alternative path available for vehicle: " << vehicleId << endl
+                         << endl;
                 }
                 break;
             }
@@ -2245,170 +2282,174 @@ class Map
     {
         for (int i = 0; i < vehicleCount; i++)
         {
-            Vehicle* vehicle = vehicles[i];
+            Vehicle *vehicle = vehicles[i];
             for (int j = vehicle->curIndex; j < strlen(vehicle->path) - 1; j++)
             {
                 char currentIntersection = vehicle->path[j];
                 char nextIntersection = vehicle->path[j + 1];
-    
+
                 if (hazard.checkHazard(currentIntersection, nextIntersection))
                 {
                     cout << vehicles[i]->id << " current Route: " << vehicles[i]->path << endl;
                     cout << "Intersection found: " << currentIntersection << "->" << nextIntersection << endl;
-                    
+
                     string roadName = "Road# " + to_string(graph.getNodeIndex(currentIntersection) + 1);
                     int congestionLevel = graph.congestionLevels->getCongestionLevel(roadName);
-    
-                    char* bestpath = reroutepath(congestionLevel, currentIntersection, vehicle);
-                    
+
+                    char *bestpath = reroutepath(congestionLevel, currentIntersection, vehicle);
+
                     if (reroute(bestpath, vehicle))
                     {
-                        cout << "New route: " << bestpath << endl << endl; 
+                        cout << "New route: " << bestpath << endl
+                             << endl;
                     }
-                    
+
                     else
                     {
-                        cout << "No alternative route available for Vehicle: " << vehicles[i]->id << "(road: " 
-                             << currentIntersection << " -> " << nextIntersection << ")" << endl << endl;
+                        cout << "No alternative route available for Vehicle: " << vehicles[i]->id << "(road: "
+                             << currentIntersection << " -> " << nextIntersection << ")" << endl
+                             << endl;
                     }
                 }
             }
         }
     }
-    
-    void dfs(char current, char end, bool visited[], string currentPath, int distance, Vehicle* vehicle) 
+
+    void dfs(char current, char end, bool visited[], string currentPath, int distance, Vehicle *vehicle)
     {
         int currentIndex = graph.getNodeIndex(current);
-        if (currentIndex == -1) 
+        if (currentIndex == -1)
         {
-            return; 
+            return;
         }
-    
+
         visited[currentIndex] = true;
-        currentPath += current; 
-        
-        if (current == end) 
+        currentPath += current;
+
+        if (current == end)
         {
-            char* pathArray = new char[currentPath.length() + 1];
+            char *pathArray = new char[currentPath.length() + 1];
             strcpy(pathArray, currentPath.c_str());
-            vehicle->addVehiclePath(pathArray, distance); 
-        } 
-        else 
+            vehicle->addVehiclePath(pathArray, distance);
+        }
+        else
         {
-            Edge* edge = graph.intersections[currentIndex].head;
-            while (edge != nullptr) 
+            Edge *edge = graph.intersections[currentIndex].head;
+            while (edge != nullptr)
             {
                 int neighborIndex = graph.getNodeIndex(edge->destination);
-                if (neighborIndex != -1 && !visited[neighborIndex]) 
+                if (neighborIndex != -1 && !visited[neighborIndex])
                 {
                     dfs(edge->destination, end, visited, currentPath, distance + edge->weight, vehicle);
                 }
                 edge = edge->next;
             }
         }
-        visited[currentIndex] = false; 
+        visited[currentIndex] = false;
     }
-    
-    void findAllPaths() 
+
+    void findAllPaths()
     {
-        for (int i = 0; i < vehicleCount; i++) 
+        for (int i = 0; i < vehicleCount; i++)
         {
             char start = vehicles[i]->start;
             char end = vehicles[i]->end;
             int distance = 0;
             int size = graph.getSize();
-            bool* visited = new bool[size];
-            
-            for (int j = 0; j < size; j++) 
+            bool *visited = new bool[size];
+
+            for (int j = 0; j < size; j++)
             {
-                visited[j] = false; 
+                visited[j] = false;
             }
-            
-            
-            dfs(start, end, visited, "", distance, vehicles[i]); 
+
+            dfs(start, end, visited, "", distance, vehicles[i]);
             checkAndUpdatePath(vehicles[i]->id);
         }
-        
     }
-    
-    void testEmergencyRoutes() 
+
+    void testEmergencyRoutes()
     {
         cout << "Total emergency vehicles: " << emergencyvehicleCount << endl; // Debugging line
-        for (int i = 0; i < emergencyvehicleCount; ++i) 
+        for (int i = 0; i < emergencyvehicleCount; ++i)
         {
-            cout << "Emergency vehicle: " << emergencyVehicles[i]->getvehicleID() << endl; 
-            emergencyVehicles[i]->route(graph);  
+            cout << "Emergency vehicle: " << emergencyVehicles[i]->getvehicleID() << endl;
+            emergencyVehicles[i]->route(graph);
         }
         cout << "Emergency routing complete." << endl;
     }
-    
+
     void blockroad(char a, char b)
     {
         bool status = true;
         hazard.insertHazard(status, a, b);
         displayBlockage();
     }
-    
-    void updateSignal() 
+
+    void updateSignal()
     {
-        for (int i = 0; i < signalCount; i++) {
-            if (signal[i] != nullptr) {
-    
-                if (signal[i]->getSignalStatus() && signal[i]->getSignalTimer() > 0) {
+        for (int i = 0; i < signalCount; i++)
+        {
+            if (signal[i] != nullptr)
+            {
+
+                if (signal[i]->getSignalStatus() && signal[i]->getSignalTimer() > 0)
+                {
                     signal[i]->decrementSignalTimer();
                     cout << "Signal at intersection " << signal[i]->getIntersection()
-                        << " timer decremented. Remaining time: "
-                        << signal[i]->getSignalTimer() << " seconds." << endl;
+                         << " timer decremented. Remaining time: "
+                         << signal[i]->getSignalTimer() << " seconds." << endl;
                 }
 
-                if (signal[i]->getSignalTimer() == 0 && signal[i]->getSignalStatus()) {
+                if (signal[i]->getSignalTimer() == 0 && signal[i]->getSignalStatus())
+                {
                     signal[i]->setStatus(false);
                     cout << "Signal at intersection " << signal[i]->getIntersection()
-                        << " is now RED." << endl;
+                         << " is now RED." << endl;
 
-                    buildHeap();  
+                    buildHeap();
 
-                    if (i + 1 < signalCount) 
+                    if (i + 1 < signalCount)
                     {
-                        signal[i + 1]->setStatus(true); 
-                        signal[i + 1]->resetSignalTimer(signal[i + 1]->getSignalTimer());  
+                        signal[i + 1]->setStatus(true);
+                        signal[i + 1]->resetSignalTimer(signal[i + 1]->getSignalTimer());
                         cout << "Signal at intersection " << signal[i + 1]->getIntersection()
-                            << " is now GREEN." << endl;
+                             << " is now GREEN." << endl;
                         break;
                     }
                 }
             }
         }
     }
-    
+
     void simulVehicle(char a, char b)
     {
-        string vehID =  "User Car";
+        string vehID = "User Car";
         int i = vehicleCount;
-        
+
         vehicles[i] = new Vehicle(vehID, a, b);
-        
+
         vehicles[i]->shortestdis(graph);
 
-        //finding paths
+        // finding paths
         char start = vehicles[i]->start;
         char end = vehicles[i]->end;
         int distance = 0;
         int size = graph.getSize();
-        bool* visited = new bool[size];
-            
-        for (int j = 0; j < size; j++) 
+        bool *visited = new bool[size];
+
+        for (int j = 0; j < size; j++)
         {
-            visited[j] = false; 
+            visited[j] = false;
         }
-    
-        dfs(start, end, visited, "", distance, vehicles[i]); 
+
+        dfs(start, end, visited, "", distance, vehicles[i]);
         vehicles[i]->displayVehPath();
-        
+
         cout << "Shortest Path: (" << vehicles[i]->path << "), (Time: " << vehicles[i]->dist << ")" << endl;
         vehicleCount++;
     }
-    
+
     void displayRoads()
     {
         graph.displayNetwork();
@@ -2417,31 +2458,30 @@ class Map
     /*************************************************
     Displaying all the vehicles in the traffic network
     *************************************************/
-    
+
     void displayVehicles()
     {
-        for (int i = 0; i < vehicleCount; i++) 
+        for (int i = 0; i < vehicleCount; i++)
         {
-            cout << "Vehicle ID: " << vehicles[i]->id 
-                 << ", (Start: " << vehicles[i]->start 
-                 << ", End: " << vehicles[i]->end 
-                 << "), (shortest distance: " << vehicles[i]->dist <<  ") " << endl;
-                 
+            cout << "Vehicle ID: " << vehicles[i]->id
+                 << ", (Start: " << vehicles[i]->start
+                 << ", End: " << vehicles[i]->end
+                 << "), (shortest distance: " << vehicles[i]->dist << ") " << endl;
         }
     }
 
     /*****************
     Displaying Signals
     *****************/
-    
+
     void displaySignals()
     {
-        for(int i=0;i<signalCount;i++)
+        for (int i = 0; i < signalCount; i++)
         {
-            cout << "Intersection: " <<signal[i]->getIntersection() <<" Green Time: "<<signal[i]->getSignalTimer()<<endl;
+            cout << "Intersection: " << signal[i]->getIntersection() << " Green Time: " << signal[i]->getSignalTimer() << endl;
         }
     }
-    
+
     void displayCongest()
     {
         for (int i = 0; i < vehicleCount; i++)
@@ -2449,11 +2489,11 @@ class Map
             char currentIntersection = vehicles[i]->current;
             char nextIntersection = vehicles[i]->path[vehicles[i]->curIndex + 1];
             graph.currentroad(currentIntersection, nextIntersection);
-        }    
+        }
 
         graph.congestionLevels->displayCongestion();
     }
-    
+
     void displayBlockage()
     {
         hazard.displayHazards();
@@ -2462,58 +2502,55 @@ class Map
     /*******************************************
     Displaying the entire traffic network system
     *******************************************/
-    
+
     void displayMap()
     {
         cout << "\n--- Traffic Network Details ---\n";
         graph.displayNetwork();
 
         cout << "\n--- Vehicle Details ---\n";
-        for (int i = 0; i < vehicleCount; i++) 
+        for (int i = 0; i < vehicleCount; i++)
         {
-            cout << "Vehicle ID: " << vehicles[i]->id 
-                 << ", Start: " << vehicles[i]->start 
-                 << ", End: " << vehicles[i]->end 
+            cout << "Vehicle ID: " << vehicles[i]->id
+                 << ", Start: " << vehicles[i]->start
+                 << ", End: " << vehicles[i]->end
                  << ",shortest distance: " << vehicles[i]->dist << endl;
-                 
         }
         hazard.displayHazards();
-        
+
         hazardcheck();
         moveVehicle();
         moveVehicle();
-    
+
         graph.congestionLevels->displayCongestion();
         updateSignalTimesBasedOnCongestion();
 
         updateSignal();
 
-        for(int i=0;i<signalCount;i++)
+        for (int i = 0; i < signalCount; i++)
         {
             string signalMessage;
 
-            if(signal[i]->getSignalStatus())
+            if (signal[i]->getSignalStatus())
             {
-                signalMessage="GREEN";
+                signalMessage = "GREEN";
             }
 
             else
             {
-                signalMessage="RED";
+                signalMessage = "RED";
             }
 
-            cout << "Intersection " <<signal[i]->getIntersection() <<": ";
-            cout << "(Green Time: " << signal[i]->getSignalTimer() <<"), (Signal Status: " << signalMessage << ")" <<endl;
-        } 
+            cout << "Intersection " << signal[i]->getIntersection() << ": ";
+            cout << "(Green Time: " << signal[i]->getSignalTimer() << "), (Signal Status: " << signalMessage << ")" << endl;
+        }
     }
-
 
     /*************************************
      Moving Vehicles At Each Intersection
-     One By One on the shortest Path we 
+     One By One on the shortest Path we
      got from A search Algorithm Function
     **************************************/
-
 
     void moveEmergencyVehicle(string emergencyVehicleID)
     {
@@ -2522,7 +2559,7 @@ class Map
             if (emergencyVehicles[i]->vehicleID == emergencyVehicleID)
             {
                 char currentIntersection = emergencyVehicles[i]->current;
-                pair<int, string> result = graph.emergencyrouteAStar(currentIntersection, emergencyVehicles[i]->endIntersection,emergencyVehicles[i]->priority);
+                pair<int, string> result = graph.emergencyrouteAStar(currentIntersection, emergencyVehicles[i]->endIntersection, emergencyVehicles[i]->priority);
                 string path = result.second;
 
                 if (path.length() < 2)
@@ -2565,41 +2602,42 @@ class Map
         }
         cout << "Emergency vehicle " << emergencyVehicleID << " not found!" << endl;
     }
-    
+
     /*********************************
     Calculation of performance metrics
     **********************************/
 
-    void performanceMetrics(){
-        int sumOfTime=0;
+    void performanceMetrics()
+    {
+        int sumOfTime = 0;
         int averageTravelTime;
 
-        for(int i=0;i<vehicleCount;i++){
-            sumOfTime+=vehicles[i]->getTravelTime();
+        for (int i = 0; i < vehicleCount; i++)
+        {
+            sumOfTime += vehicles[i]->getTravelTime();
         }
 
-        averageTravelTime=sumOfTime/vehicleCount;
+        averageTravelTime = sumOfTime / vehicleCount;
 
-        cout<<"Average Vehicle Travel Time: "<<averageTravelTime<<endl;
-        cout<<"Number of Resolved Congestion Events: "<<resolvedCount<<endl;
+        cout << "Average Vehicle Travel Time: " << averageTravelTime << endl;
+        cout << "Number of Resolved Congestion Events: " << resolvedCount << endl;
     }
-
 };
-
 
 /************
 Main Function
 ************/
 
-int main() 
+int main()
 {
 
     /*************************************
-    Intializing Map object,calculating the 
+    Intializing Map object,calculating the
     shortest distance and all possible
     paths.
     *************************************/
 
+    cout << "\n";
     Map trafficMap;
     trafficMap.shortestDis();
     trafficMap.findAllPaths();
@@ -2608,191 +2646,188 @@ int main()
     List of variables used in switch case
     ************************************/
 
-    string priorityLevel,EV,vehicleName,addVehicle,moveVehicle; 
-    char a,b,c,d,start,end,vehicleStart,vehicleEnd;
-    int id,vehicleID,moveVehicleID;
+    string priorityLevel, EV, vehicleName, addVehicle, moveVehicle;
+    char a, b, c, d, start, end, vehicleStart, vehicleEnd;
+    int id, vehicleID, moveVehicleID;
 
     /*******************
     Simulation Dashboard
     *******************/
-    
-    while(true)
+
+    while (true)
     {
         int ans;
-        cout << "------ Simulation Dashboard ------" << endl;
+        cout << "------ Simulation Dashboard ------\n"
+             << endl;
         cout << "1.  Display City Traffic Network\n"
-         << "2.  Display All Vehicles\n"
-         << "3.  Display Traffic Signal Status\n"
-         << "4.  Display Congestion Status\n"
-         << "5.  Display Blocked Roads\n"
-         << "6.  Handle Emergency Vehicle Routing\n"
-         << "7.  Block Road due to Accident\n"
-         << "8.  Add an Emergency Vehicle\n"
-         << "9.  Display Path for a Specific Vehicle\n"
-         << "10. Add a new Vehicle\n"
-         << "11. Move a Vehicle\n"
-         << "12. Display Performance Metrics\n"
-         << "13. Simulate Vehicle Routing\n"
-         << "14. Bonus Case\n"
-         << "15. Move Emergency Vehicle\n"
-         << "16. Exit Simulation\n\n";
-         
+             << "2.  Display All Vehicles\n"
+             << "3.  Display Traffic Signal Status\n"
+             << "4.  Display Congestion Status\n"
+             << "5.  Display Blocked Roads\n"
+             << "6.  Handle Emergency Vehicle Routing\n"
+             << "7.  Block Road due to Accident\n"
+             << "8.  Add an Emergency Vehicle\n"
+             << "9.  Display Path for a Specific Vehicle\n"
+             << "10. Add a new Vehicle\n"
+             << "11. Move a Vehicle\n"
+             << "12. Display Performance Metrics\n"
+             << "13. Simulate Vehicle Routing\n"
+             << "14. Bonus Case\n"
+             << "15. Move Emergency Vehicle\n"
+             << "16. Exit Simulation\n\n";
+
         cout << "Enter you choice: ";
         cin >> ans;
-        
-        switch (ans) 
+
+        switch (ans)
         {
 
-            case 1:
+        case 1:
 
-                cout << "Displaying City Traffic Network...\n";
-                trafficMap.displayRoads();
-                break;
+            cout << "Displaying City Traffic Network...\n";
+            trafficMap.displayRoads();
+            break;
 
-            case 2:
+        case 2:
 
-                cout << "Displaying All Vehicles...\n";
-                trafficMap.displayVehicles();
-                break;
+            cout << "Displaying All Vehicles...\n";
+            trafficMap.displayVehicles();
+            break;
 
-            case 3:
+        case 3:
 
-                cout << "Displaying Traffic Signal Status...\n";
-                trafficMap.displaySignals();
-                break;
+            cout << "Displaying Traffic Signal Status...\n";
+            trafficMap.displaySignals();
+            break;
 
-            case 4:
+        case 4:
 
-                cout << "Displaying Congestion Status...\n";
-                trafficMap.displayCongest();
-                break;
+            cout << "Displaying Congestion Status...\n";
+            trafficMap.displayCongest();
+            break;
 
-            case 5:
+        case 5:
 
-                cout << "Displaying Blocked Roads...\n";
-                trafficMap.displayBlockage();
-                cout << "Roads are not find for the below blocked roads";
-                
-                break;
+            cout << "Displaying Blocked Roads...\n";
+            trafficMap.displayBlockage();
 
-            case 6:
+            break;
 
-                cout << "Handling Emergency Vehicle Routing...\n";
-                trafficMap.testEmergencyRoutes();
-                break;
+        case 6:
 
-            case 7:
+            cout << "Handling Emergency Vehicle Routing...\n";
+            trafficMap.testEmergencyRoutes();
+            break;
 
-                cout << "Blocking Road due to Accident...\n";
-                cout << "Start & End Intersection: ";
-                cin >> a >> b;
-                
-                trafficMap.blockroad(a, b);
-                trafficMap.updateHazardCSV(a,b,"Blocked");
-                break;
-            
-            case 8:
+        case 7:
 
-                cout<<"Adding Emergency Vehicle...\n";
-                cout<<"Enter Emergency Vehicle ID #: ";
-                cin>>id;
+            cout << "Blocking Road due to Accident...\n";
+            cout << "Start & End Intersection: ";
+            cin >> a >> b;
 
-                EV="EV"+to_string(id);
+            trafficMap.blockroad(a, b);
+            trafficMap.updateHazardCSV(a, b, "Blocked");
+            break;
 
-                cout<<"Enter Start & End Intersection: ";
-                cin>>start>>end;
+        case 8:
 
-                cout<<"Enter Priority Level: ";
-                cin>>priorityLevel;
+            cout << "Adding Emergency Vehicle...\n";
+            cout << "Enter Emergency Vehicle ID #: ";
+            cin >> id;
 
-                trafficMap.updateEmergencyCSV(EV,start,end,priorityLevel);
-            
-                break;
+            EV = "EV" + to_string(id);
 
-            case 9:
+            cout << "Enter Start & End Intersection: ";
+            cin >> start >> end;
 
-                cout<<"Displaying Path for a Specific Vehicle...\n";
-                cout<<"Enter name of the vehicle whose path you want to displayed: ";
-                cin>>vehicleName;
+            cout << "Enter Priority Level: ";
+            cin >> priorityLevel;
 
-                trafficMap.checkAndUpdatePath(vehicleName);
-                trafficMap.displayVehiclePath(vehicleName);
-                break; 
+            trafficMap.updateEmergencyCSV(EV, start, end, priorityLevel);
 
-            case 10:
+            break;
 
-                cout<<"Adding New Vehicle...\n";
-                cout<<"Enter Vehicle ID #: ";
-                cin>>vehicleID;
+        case 9:
 
-                addVehicle="V"+to_string(vehicleID);
+            cout << "Displaying Path for a Specific Vehicle...\n";
+            cout << "Enter name of the vehicle whose path you want to displayed: ";
+            cin >> vehicleName;
 
-                cout<<"Enter Start & End Intersection: ";
-                cin>>vehicleStart>>vehicleEnd;
+            trafficMap.checkAndUpdatePath(vehicleName);
+            trafficMap.displayVehiclePath(vehicleName);
+            break;
 
-                trafficMap.updateVehicleCSV(addVehicle,vehicleStart,vehicleEnd);
-                //trafficMap.findAllPaths();
-                break;
+        case 10:
 
-            case 11:
+            cout << "Adding New Vehicle...\n";
+            cout << "Enter Vehicle ID #: ";
+            cin >> vehicleID;
 
-                cout<<"Moving A Vehicle...\n";
-                cout<<"Enter Vehicle ID #: ";
-                cin>>moveVehicleID;
+            addVehicle = "V" + to_string(vehicleID);
 
-                moveVehicle="V"+to_string(moveVehicleID);
-                trafficMap.checkAndUpdatePath(moveVehicle);
-                trafficMap.move(moveVehicle);
+            cout << "Enter Start & End Intersection: ";
+            cin >> vehicleStart >> vehicleEnd;
 
-                break;
+            trafficMap.updateVehicleCSV(addVehicle, vehicleStart, vehicleEnd);
+            // trafficMap.findAllPaths();
+            break;
 
-            case 12:
+        case 11:
 
-                cout<<"Getting Performance Metrics...\n";
-                trafficMap.performanceMetrics();
+            cout << "Moving A Vehicle...\n";
+            cout << "Enter Vehicle ID #: ";
+            cin >> moveVehicleID;
 
-                break;
+            moveVehicle = "V" + to_string(moveVehicleID);
+            trafficMap.checkAndUpdatePath(moveVehicle);
+            trafficMap.move(moveVehicle);
 
-            case 13:
+            break;
 
-                cout << "Simulating Vehicle Routing...\n";
-                cout << "Start & End Intersection: ";
-                cin >> c >> d;
-                
-                trafficMap.simulVehicle(c, d);
-                break;
-            
-            case 14:
+        case 12:
 
-                cout<<"Starting Bonus Case...\n";
-                trafficMap.moveVehicle();
-                break;
+            cout << "Getting Performance Metrics...\n";
+            trafficMap.performanceMetrics();
 
-            case 15:
+            break;
 
-                cout << "Moving Emergency Vehicle...\n";
-                cout << "Enter Emergency Vehicle ID #: ";
-                cin >> id;
-        
-                EV = "EV" + to_string(id);
-                trafficMap.moveEmergencyVehicle(EV);
-                break;
+        case 13:
 
-            case 16:
+            cout << "Simulating Vehicle Routing...\n";
+            cout << "Start & End Intersection: ";
+            cin >> c >> d;
 
-                cout << "Exiting Simulation. Goodbye!\n";
-                return 0;
+            trafficMap.simulVehicle(c, d);
+            break;
 
-            default:
-                cout << "Invalid choice. Please try again.\n";
-        
+        case 14:
+
+            cout << "Starting Bonus Case...\n";
+            trafficMap.moveVehicle();
+            break;
+
+        case 15:
+
+            cout << "Moving Emergency Vehicle...\n";
+            cout << "Enter Emergency Vehicle ID #: ";
+            cin >> id;
+
+            EV = "EV" + to_string(id);
+            trafficMap.moveEmergencyVehicle(EV);
+            break;
+
+        case 16:
+
+            cout << "Exiting Simulation..." << endl;
+            cout << "Goodbye!" << endl;
+            return 0;
+
+        default:
+            cout << "Invalid choice. Please try again.\n";
         }
 
         cout << endl;
-    
     }
-    
+
     return 0;
-
 }
-
