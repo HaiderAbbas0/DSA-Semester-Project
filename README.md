@@ -354,6 +354,7 @@ Serves as the core class for managing and simulating the traffic network.
 
 ---
 
+## Outputs
 | **Case Number** | **Case Description**                       | **Expected Output**                                                                                     |
 |------------------|-------------------------------------------|---------------------------------------------------------------------------------------------------------|
 | **1**            | **Display City Traffic Network**         | Outputs all  intersections and roads with travel times.             |
@@ -372,17 +373,8 @@ Serves as the core class for managing and simulating the traffic network.
 | **14**           | **Bonus Case**                           | Reserved for moving all the vehicles an intersection at once.         |
 | **15**           | **Move Emergency Vehicle**               | Moves a specified emergency vehicle along its priority route, showing updated paths and travel times.    |
 | **16**           | **Exit Simulation**                      | Terminates the simulation and saves any final data if required.                                          |
-
 ---
 
-## Additional Details
-### **Challenges Faced**
-- Implementing dynamic graph updates without affecting ongoing vehicle routes.
-- Managing memory usage for real-time routing and congestion tracking.
-- Ensuring emergency vehicle priority without creating cascading congestion.
-
-### **Future Enhancements**
-- Integration of predictive features for congestion management.
-- Support for multi-modal transportation (e.g., buses, bicycles).
-- Enhanced visualization using graphical libraries.
+### **Conclusion**  
+The Smart Traffic Management System Simulator offers a robust solution for optimizing urban traffic flow, managing congestion, and prioritizing emergency routes in real-time. By leveraging advanced algorithms and dynamic data structures, it creates an interactive platform to address modern traffic challenges. With future enhancements, this simulator has the potential to become a comprehensive tool for urban traffic planning and management.
 
