@@ -760,6 +760,7 @@ class TrafficNetwork
     int signalCount;
     Congestion* congestionLevels; 
     bool originalSignal[100];
+    Hazard hazard;
 
     /**********
     Constructor
@@ -1094,80 +1095,98 @@ class TrafficNetwork
           return abs(end - start);
     }
 
-    pair<int, string> emergencyrouteAStar(char start, char end) 
+    pair<int, string> emergencyrouteAStar(char start, char end, string p)
     {
-    cout << "Starting A* search from " << start << " to " << end << endl;
+        cout << "Starting A* search from " << start << " to " << end << endl;
 
-    PriorityQueue pq1(size);
-    
-    int costFromStart[size];   
-    int totalCost[size];       
-    char previous[size];       
-    bool visited[size];        
+        PriorityQueue pq1(size);
 
-    
-    for (int i = 0; i < size; i++) {
-        costFromStart[i] = 99999;
-        totalCost[i] = 99999;
-        previous[i] = '\0';
-        visited[i] = false;
-    }
+        int costFromStart[size];
+        int totalCost[size];
+        char previous[size];
+        bool visited[size];
 
-    int startIndex = getNodeIndex(start);
-    int endIndex = getNodeIndex(end);
-
-    if (startIndex == -1 || endIndex == -1) 
-    {
-        cout << "Start or end intersection not found!" << endl;
-        return {99999, ""};
-    }
-
-    costFromStart[startIndex] = 0;
-    totalCost[startIndex] = heuristic(start, end);
-    pq1.push({totalCost[startIndex], start});
-
-    while (!pq1.empty()) 
-    {
-        pair<int, char> current = pq1.top();
-        pq1.pop();
-
-        int currentCost = current.first;   
-        char currentNode = current.second; 
-
-        int currentIndex = getNodeIndex(currentNode);
-    if (visited[currentIndex]) continue;
-
-        visited[currentIndex] = true;
-        if (currentNode == end) break;  
-
-        Edge* edge = intersections[currentIndex].head;
-        while (edge != nullptr) 
+        for (int i = 0; i < size; i++)
         {
-            int neighborIndex = getNodeIndex(edge->destination);
-            if (neighborIndex != -1 && !visited[neighborIndex]) 
+            costFromStart[i] = 99999;
+            totalCost[i] = 99999;
+            previous[i] = '\0';
+            visited[i] = false;
+        }
+
+        int startIndex = getNodeIndex(start);
+        int endIndex = getNodeIndex(end);
+
+        if (startIndex == -1 || endIndex == -1)
+        {
+            cout << "Start or end intersection not found!" << endl;
+            return {99999, ""};
+        }
+
+        costFromStart[startIndex] = 0;
+        totalCost[startIndex] = heuristic(start, end);
+        pq1.push({totalCost[startIndex], start});
+
+        while (!pq1.empty())
+        {
+            pair<int, char> current = pq1.top();
+            pq1.pop();
+
+            int currentCost = current.first;
+            char currentNode = current.second;
+
+            int currentIndex = getNodeIndex(currentNode);
+            if (visited[currentIndex])
             {
-                int newCost = currentCost + edge->weight;
-                if (newCost < costFromStart[neighborIndex]) 
-                {
-                costFromStart[neighborIndex] = newCost;
-                totalCost[neighborIndex] = newCost + heuristic(edge->destination, end);
-                previous[neighborIndex] = currentNode;
-                pq1.push({totalCost[neighborIndex], edge->destination});
-                }
+                continue;
             }
-            edge = edge->next;
+            visited[currentIndex] = true;
+            if (currentNode == end)
+            {
+                break;
+            }
+
+            Edge *edge = intersections[currentIndex].head;
+            while (edge != nullptr)
+            {
+                if(hazard.checkHazard(currentNode, edge->destination))
+                {
+                    cout << "Blocked road detected from " << currentNode << " to " << edge->destination << endl;
+                    edge = edge->next;
+                    continue;
+                }
+
+                int neighborIndex = getNodeIndex(edge->destination);
+                if (neighborIndex != -1 && !visited[neighborIndex])
+                {
+                    int newCost = currentCost + edge->weight;
+                    if (newCost < costFromStart[neighborIndex])
+                    {
+                        costFromStart[neighborIndex] = newCost;
+                        totalCost[neighborIndex] = newCost + heuristic(edge->destination, end);
+                        previous[neighborIndex] = currentNode;
+                        
+                        if(p == "High")
+                        {
+                            totalCost[neighborIndex] -= 10; 
+                        }
+                        pq1.push({totalCost[neighborIndex], edge->destination});
+                    }
+                }
+                edge = edge->next;
             }
         }
 
-    string path;
-    for (char current = end; current != '\0'; current = previous[getNodeIndex(current)]) 
-    {
+        string path;
+        for (char current = end; current != '\0'; current = previous[getNodeIndex(current)])
+        {
             path = current + path;
-    }
+        }
 
-    cout << "Final path: " << path << endl << endl;
-    return {costFromStart[endIndex], path};
-}
+        cout << "Final path: " << path << endl
+             << endl;
+        return {costFromStart[endIndex], path};
+    }
 
 };
 
@@ -1308,18 +1327,22 @@ class EmergencyVehicle
         return vehicleID;
     }
 
-   void route(TrafficNetwork& network)
+   void route(TrafficNetwork &network)
     {
-        //cout << "Overriding signal for intersection: " << startIntersection << endl;
         network.overrideSignal(startIntersection);
-        
-        pair<int, string> result = network.emergencyrouteAStar(startIntersection, endIntersection);
-        string path = result.second; 
 
-        if (result.first == 99999) 
+        pair<int, string> result = network.emergencyrouteAStar(startIntersection, endIntersection, priority);
+        string path = result.second;
+
+        if (result.first == 99999)
         {
             cout << "No valid route found from " << startIntersection << " to " << endIntersection << endl;
-        } 
+        }
+        else
+        {
+            cout<<"Route Found: "<<path<<endl;
+        }
+
         network.restoreSignal();
     }
 
@@ -1725,24 +1748,18 @@ class Map
         file1.close();
 
         vehicles[vehicleCount]=new Vehicle(name,intersection1,intersection2);
-        vehicleCount++;
+        
 
         cout<<"New data appended to vehicles.csv successfully"<<endl;
-        
-        int i = vehicleCount;
-        char start = intersection1;
-        char end = intersection2;
-        int distance = 0;
-        int size = graph.getSize();
-        bool* visited = new bool[size];
-            
-        for (int j = 0; j < size; j++) 
-        {
-            visited[j] = false; 
-        }
+
+        vehicles[vehicleCount]->shortestdis(graph);
+
     
-        dfs(start, end, visited, "", distance, vehicles[i]); 
-        checkAndUpdatePath(name);
+       // dfs(start, end, visited, "", distance, vehicles[i]); 
+        //checkAndUpdatePath(name);
+        vehicleCount++;
+
+        return;
     }
 
     /**********************************************************
@@ -2179,7 +2196,8 @@ class Map
             {
                 cout << "Hazard found in vehicle " << vehicleId << " route: (" << start << "," << end << ")" << endl;
                 cout << "Current path: " << vehicle->path << endl;
-    
+
+                resolvedCount++;
                 char* bestPath = reroutepath(graph.congestionLevels->getCongestionLevel("Road#"), reroutestart, vehicle);
     
                 if (bestPath != nullptr)
@@ -2280,7 +2298,8 @@ class Map
             {
                 visited[j] = false; 
             }
-    
+            
+            
             dfs(start, end, visited, "", distance, vehicles[i]); 
             checkAndUpdatePath(vehicles[i]->id);
         }
@@ -2470,7 +2489,7 @@ class Map
             if (emergencyVehicles[i]->vehicleID == emergencyVehicleID)
             {
                 char currentIntersection = emergencyVehicles[i]->current;
-                pair<int, string> result = graph.emergencyrouteAStar(currentIntersection, emergencyVehicles[i]->endIntersection);
+                pair<int, string> result = graph.emergencyrouteAStar(currentIntersection, emergencyVehicles[i]->endIntersection,emergencyVehicles[i]->priority);
                 string path = result.second;
 
                 if (path.length() < 2)
@@ -2513,7 +2532,6 @@ class Map
         }
         cout << "Emergency vehicle " << emergencyVehicleID << " not found!" << endl;
     }
-
     
     /*********************************
     Calculation of performance metrics
@@ -2680,6 +2698,7 @@ int main()
                 cin>>vehicleStart>>vehicleEnd;
 
                 trafficMap.updateVehicleCSV(addVehicle,vehicleStart,vehicleEnd);
+                //trafficMap.findAllPaths();
                 break;
 
             case 11:
