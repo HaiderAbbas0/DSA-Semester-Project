@@ -1728,6 +1728,21 @@ class Map
         vehicleCount++;
 
         cout<<"New data appended to vehicles.csv successfully"<<endl;
+        
+        int i = vehicleCount;
+        char start = intersection1;
+        char end = intersection2;
+        int distance = 0;
+        int size = graph.getSize();
+        bool* visited = new bool[size];
+            
+        for (int j = 0; j < size; j++) 
+        {
+            visited[j] = false; 
+        }
+    
+        dfs(start, end, visited, "", distance, vehicles[i]); 
+        checkAndUpdatePath(name);
     }
 
     /**********************************************************
